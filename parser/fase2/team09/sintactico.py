@@ -2255,9 +2255,7 @@ def p_inst_generales3(t):
     arr1 = []
     arr1.append('encabezado')
     arr1.append(t[1])
-
     arr.append(arr1)
-
     t[0] = arr
 
 def p_inst_generales_ins(t):
@@ -2299,9 +2297,6 @@ def p_encabezado(t):
                     | STACK CORIZQ ENTERO CORDER
                     | H IGUAL ENTERO
                     | P IGUAL ENTERO'''
-    global optimizacion
-
-
     n = ''
 
     if t[1] == 'HEAP':
@@ -2533,8 +2528,9 @@ def optimizar(texto):
     lexer.lineno = 0
     global optimizacion, reglas, pendiente
     optimizacion = []
-    reglas = []
-    pendiente = []
+    r.Reglas.pendiente = ''
+    r.Reglas.optimizado = ''
+    r.Reglas.reglas = []
     parse = parser.parse(texto)
     #print('Optimizacion -> ' + str(len(optimizacion)))
     #vvmensaje = ''

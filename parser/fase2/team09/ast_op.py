@@ -5,6 +5,9 @@ import salto_condicional as sc
 import salto as s
 import reglas as r
 
+auxiliar = 0
+cambio_aux = False
+
 class ast_op():
     def __init__(self, instrucciones):
         self.instrucciones = instrucciones
@@ -14,13 +17,25 @@ class ast_op():
         codigo = '#**** CODIGO OPTIMIZADO ****\n'
 
         ins = self.instrucciones
-        i = 0
+        global auxiliar, cambio_aux
 
-        for i in range(len(ins)):
+        for i in range(0, len(ins)):
             
+            if cambio_aux == True:
+                if auxiliar != i:
+                    i = auxiliar
+                    auxiliar = 0
+                    cambio_aux = False
+
+            if i >= len(ins):
+                break
+
             sentencia = ins[i]
+            print('\nEl valor de i -> ' + str(i))
+            print('La sentencia actual es -> ' + str(sentencia) + '\n')
 
             if sentencia[0] == 'sc':
+
                 #Salto condicional
                 try:
                     sig_incon = ins[i+1]
@@ -36,7 +51,8 @@ class ast_op():
                         #Se cumple la regla 3
                         print('regla3')
                 
-                if sig_incon[0] == 'sin':
+                if sig_incon != None and sig_incon[0] == 'sin':
+                    
                     #No se sabe que regla es, así que se activan las 2 
                     r.Reglas.regla4 = True
                     r.Reglas.regla5 = True
@@ -53,6 +69,7 @@ class ast_op():
                     
                     #Si solo la regla4 es true
                     elif r.Reglas.regla4:
+                        
                         nuevo = 'goto ' + ins[i][2]
                         codigo_regla4 = '#Se cumple la regla 4\n' + nuevo + '\n'
                         r.Reglas.optimizado = r.Reglas.optimizado + codigo_regla4
@@ -64,6 +81,7 @@ class ast_op():
                 
                     #Si sola la regla5 es true
                     elif r.Reglas.regla5:
+
                         codigo_regla5 = '#Se cumple la regla 5 \n'+ incond + '\n'
                         r.Reglas.optimizado = r.Reglas.optimizado + codigo_regla5
 
@@ -75,6 +93,8 @@ class ast_op():
                     r.Reglas.condicional_negada = ''
                     r.Reglas.regla4 = False
                     r.Reglas.regla5 = False
+                    auxiliar = i + 2
+                    cambio_aux = True
 
                 else:
                     self.otros(sentencia)
@@ -85,7 +105,6 @@ class ast_op():
 
             elif sentencia[0] == 'sin':
                 #Regla 2
-                print('Entro a regla 2')
                 try:
                     sig_ins = ins[i+1]
                 except:
@@ -121,7 +140,6 @@ class ast_op():
                                     break
 
                         if cumple:
-                            print('Si cumple regla 2')
                             codigo_eliminar = ''
 
                             codigo_regla2 = '#Se cumple la regla 2\n'
@@ -130,10 +148,7 @@ class ast_op():
                             codigo_regla2 = codigo_regla2 + 'label ' + etiqueta_sc + '\n'
                             n = 'label ' +  etiqueta_sc + ': <br>'
 
-                            j = i + 1
-
-                            for j in range(tope):
-                                print('Entro a for de codigo eliminado')
+                            for j in range(i+1,tope):
                                 #Concatena el código que se va a eliminar
                                 instru = ins[j]
 
@@ -142,7 +157,6 @@ class ast_op():
                                 codigo_eliminar = codigo_eliminar + r.Reglas.pendiente + '<br>'
                                 r.Reglas.pendiente = ''
 
-                            print('codigo optimizado hasta el momento :\n' + r.Reglas.optimizado)
                             #El código anterior se elimina 
                             #Se concantena las instrucciones hasta que se encuentro un salto, salto condicional o incondicional
                             r.Reglas.regla2 = False
@@ -150,27 +164,21 @@ class ast_op():
                             codigo_abajo = ''
                             tope_nuevo = tope
 
-                            print('nuevo tope -> ' + str(tope_nuevo))
-
                             for j in range(tope + 1, len(ins)):
                                 instruc = ins[j]
                                 tope_nuevo = j
-                                print('nuevo tope -> ' + str(tope_nuevo))
-
-                                print('codigo optimizado hasta el momento :\n' + r.Reglas.optimizado)
 
                                 if instruc[0] != 'sc' and instruc[0] != 'sin' and instruc[0] != 'salto':
                                     self.otros(instruc)
-
+                                    print('Codigo pendiente -> ' + r.Reglas.pendiente)
                                     if r.Reglas.pendiente != '' :
                                         n = n + r.Reglas.pendiente + '<br>'
                                         codigo_regla2 = codigo_regla2 + r.Reglas.pendiente
                                         codigo_abajo = codigo_abajo + r.Reglas.pendiente + '<br>'
                                         r.Reglas.pendiente = ''
-                                
-                                    print('valor de codigo_regla2 despues\n' + codigo_regla2)
+
                                 else:
-                                    print('no hay más instrucciones')
+                                    
                                     break
 
                             goto = si.Salto_in(sentencia[1]).optimizacion()
@@ -184,8 +192,9 @@ class ast_op():
 
                             r.Reglas.condicional_negada = ''
                             r.Reglas.optimizado = r.Reglas.optimizado + codigo_regla2
-                            i = tope_nuevo + 1 
-                            print('nuevo tope = i -> ' + str(i))
+                            cambio_aux = True
+                            auxiliar = tope_nuevo + 1 
+                            
                         else:
 
                             #No se cumple la regla entonces solo imprime el goto

@@ -85,16 +85,16 @@ class interfaz():
 
         ##############################################BOTONES####################################
         
-        #img2 = PhotoImage(file='img/icons/AnalyzeMP.png')
-        btnanalizar = Button(self.window , bg="#6a8d92",height=35, width=40, command=self.btnanalizar_click)
+        img2 = PhotoImage(file='img/icons/AnalyzeMP.png')
+        btnanalizar = Button(self.window , image=img2, bg="#6a8d92",height=35, width=40, command=self.btnanalizar_click)
         btnanalizar.place(x=20,y=4)
 
-       # img3 = PhotoImage(file='img/icons/play32.png')
-        btnejecutar = Button(self.window , bg="#6a8d92",height=35, width=40,command=self.btnejecutar_click)
+        img3 = PhotoImage(file='img/icons/play32.png')
+        btnejecutar = Button(self.window , image=img3, bg="#6a8d92",height=35, width=40,command=self.btnejecutar_click)
         btnejecutar.place(x=115,y=5)
 
-       # img4 = PhotoImage(file='img/icons/op.png')
-        btnoptimizar = Button(self.window, bg="#6a8d92",height=35, width=40,command=self.btnoptimizar_click)
+        img4 = PhotoImage(file='img/icons/op.png')
+        btnoptimizar = Button(self.window, image=img4, bg="#6a8d92",height=35, width=40,command=self.btnoptimizar_click)
         btnoptimizar.place(x=200,y=5)
 
         ##############################################PESTAÑAS####################################
