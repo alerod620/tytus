@@ -4,6 +4,8 @@ import salto_incodicional as si
 import salto_condicional as sc
 import salto as s
 import reglas as r
+import asignacion as asig
+import acceso_hs as acceso
 
 auxiliar = 0
 cambio_aux = False
@@ -31,8 +33,6 @@ class ast_op():
                 break
 
             sentencia = ins[i]
-            print('\nEl valor de i -> ' + str(i))
-            print('La sentencia actual es -> ' + str(sentencia) + '\n')
 
             if sentencia[0] == 'sc':
 
@@ -69,9 +69,9 @@ class ast_op():
                     
                     #Si solo la regla4 es true
                     elif r.Reglas.regla4:
-                        
+
                         nuevo = 'goto ' + ins[i][2]
-                        codigo_regla4 = '#Se cumple la regla 4\n' + nuevo + '\n'
+                        codigo_regla4 = '    #Se cumple la regla 4\n    ' + nuevo + '\n'
                         r.Reglas.optimizado = r.Reglas.optimizado + codigo_regla4
 
                         anterior = cond + '<br>' + incond + '<br>'
@@ -82,7 +82,7 @@ class ast_op():
                     #Si sola la regla5 es true
                     elif r.Reglas.regla5:
 
-                        codigo_regla5 = '#Se cumple la regla 5 \n'+ incond + '\n'
+                        codigo_regla5 = '    #Se cumple la regla 5 \n    '+ incond + '\n'
                         r.Reglas.optimizado = r.Reglas.optimizado + codigo_regla5
 
                         anterior = cond + '<br>' + incond
@@ -142,10 +142,10 @@ class ast_op():
                         if cumple:
                             codigo_eliminar = ''
 
-                            codigo_regla2 = '#Se cumple la regla 2\n'
+                            codigo_regla2 = '    #Se cumple la regla 2\n'
 
                             r.Reglas.regla2 = True
-                            codigo_regla2 = codigo_regla2 + 'label ' + etiqueta_sc + '\n'
+                            codigo_regla2 = codigo_regla2 + '    label ' + etiqueta_sc + '\n'
                             n = 'label ' +  etiqueta_sc + ': <br>'
 
                             for j in range(i+1,tope):
@@ -170,7 +170,6 @@ class ast_op():
 
                                 if instruc[0] != 'sc' and instruc[0] != 'sin' and instruc[0] != 'salto':
                                     self.otros(instruc)
-                                    print('Codigo pendiente -> ' + r.Reglas.pendiente)
                                     if r.Reglas.pendiente != '' :
                                         n = n + r.Reglas.pendiente + '<br>'
                                         codigo_regla2 = codigo_regla2 + r.Reglas.pendiente
@@ -222,6 +221,8 @@ class ast_op():
         
     def otros(self, entrada):
 
+        print(str(entrada))
+
         if entrada[0] == 'encabezado':
             #Encabezado
             encabezado.Encabezado(entrada[1]).optimizacion()
@@ -229,3 +230,11 @@ class ast_op():
         elif entrada[0] == 'asignacion':
             #Asignacion
             aritmetica.Aritmetica(entrada[1], entrada[2], entrada[3]).optimizacion()
+
+        elif entrada[0] == 'asig':
+            #Asignacion
+            asig.Asignacion(entrada[1]).optimizacion()
+
+        elif entrada[0] == 'acceso':
+            #Acceso de heap y stack
+            acceso.Acceso(entrada[1], entrada[2], entrada[3]).optimizacion()

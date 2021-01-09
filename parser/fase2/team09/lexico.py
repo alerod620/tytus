@@ -122,7 +122,9 @@ tokens = reservadas + (
     'ETIQUETA',
     'IGUALIGUAL',
     'NOIGUAL',
-    'DOSP'
+    'DOSP',
+    'COM_MUL_PY',
+    'COM_SIM_PY'
 )
 
 # OPTIMIZACIÓN
@@ -218,6 +220,16 @@ def t_COMENTARIO_MULTILINEA(t):
 # Comentario simple // ...
 def t_COMENTARIO_SIMPLE(t):
     r'--.*\n'
+    t.lexer.lineno += 1
+
+#Comentarios para el C3D
+def t_COM_MUL_PY(t):
+    r'\'\'\'(.|\n)*\'\'\''
+    t.lexer.lineno += t.value.count('\n')
+
+# Comentario simple // ...
+def t_COM_SIMP_PY(t):
+    r'\#.*\n'
     t.lexer.lineno += 1
 
 def t_BLANCO(t):

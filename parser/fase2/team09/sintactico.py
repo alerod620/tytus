@@ -2362,6 +2362,7 @@ def p_inst_generales3(t):
 def p_inst_generales_ins(t):
     '''instrucciones_generales  : instrucciones_generales instruccion2'''
     t[1].append(t[2])
+    #print('Valor del instrucciones generales recursivo -> ' + str(t[1]))
     t[0] = t[1]
     
 
@@ -2369,7 +2370,18 @@ def p_inst_generales_ins2(t):
     '''instrucciones_generales  : instruccion2'''
     arr = []
     arr.append(t[1])
-    #print('Valor del arr -> ' + str(arr))
+    #print('Valor del instrucciones generales -> ' + str(arr))
+    t[0] = arr
+
+def p_inst_generales_declara(t):
+    '''instrucciones_generales : instrucciones_generales declara_metodo'''
+    t[1].append(t[2])
+    t[0] = t[1]
+
+def p_inst_generales_declara2(t):
+    '''instrucciones_generales : declara_metodo'''
+    arr = []
+    arr.append(t[1])
     t[0] = arr
 
 def p_inst_generales1(t):
@@ -2391,19 +2403,28 @@ def p_inst_generales2(t):
     
     t[0] = arr
 
+def p_declara_metodo(t):
+    '''declara_metodo : DEF ID PARIZQ PARDER DOSP'''
+    arr1 = []
+    arr1.append('asig')
+    n = 'def ' + str(t[2]) + '():'
+    arr1.append(n)
+
+    t[0] = arr1
+
 def p_encabezado(t):
     '''encabezado   : FROM GOTO IMPORT WITH_GOTO
                     | ARROBA WITH_GOTO DEF ID PARIZQ PARDER DOSP
-                    | HEAP CORIZQ ENTERO CORDER
-                    | STACK CORIZQ ENTERO CORDER
+                    | HEAP IGUAL CORIZQ ENTERO CORDER
+                    | STACK IGUAL CORIZQ ENTERO CORDER
                     | H IGUAL ENTERO
                     | P IGUAL ENTERO'''
     n = ''
 
     if t[1] == 'HEAP':
-        n = 'heap[' + str(t[3]) + ']'
+        n = 'heap = [' + str(t[4]) + ']'
     elif t[1] ==  'STACK':
-        n = 'stack[' + str(t[3]) + ']'
+        n = 'stack = [' + str(t[4]) + ']'
     elif t[1] == 'H':
         n = 'H = ' + str(t[3])
     elif t[1] == 'P':
@@ -2432,55 +2453,77 @@ def p_instruccion_2(t):
                     | salto_incondicional
                     | salto_condicional
                     | salto'''
-
     t[0] = t[1]
 
 def p_asignacion(t):
-    '''asignacion   : literal IGUAL operacion_aritmetica'''
+    '''asignacion   : literal IGUAL operacion_aritmetica
+                    | literal IGUAL HEAP CORIZQ literal CORDER
+                    | literal IGUAL STACK CORIZQ literal CORDER
+                    | HEAP CORIZQ literal CORDER IGUAL operacion_aritmetica
+                    | STACK CORIZQ literal CORDER IGUAL operacion_aritmetica'''
+    
+    arr = []
     if t[2] == "=":
         if t[3] == 'HEAP':
-            print('HEAP')
+            n = str(t[1]) + ' = heap[' + str(t[5]) + ']'
+            arr.append('asig')
+            arr.append(n)
         elif t[3] == 'STACK':
-            print('STACK')
+            n = str(t[1]) + ' = stack[' + str(t[5]) + ']'
+            arr.append('asig')
+            arr.append(n)
         else:
-            arr = []
-            arr.append('asignacion')
-            arr.append(t[1])
-            arr.append(t[3])
-            arr.append(t.lexer.lineno)
-            t[0] = arr
-            #const = op.Aritmetica(t[1], t[3], t.lexer.lineno)
-            #optimizacion.append(const)
+            if len(t[3]) == 1:
+                n = str(t[1]) + ' = ' + str(t[3][0])
+                arr.append('asig')
+                arr.append(n)
+            else:
+                arr.append('asignacion')
+                arr.append(t[1])
+                arr.append(t[3])
+                arr.append(t.lexer.lineno)
+    elif t[1] == 'HEAP' or t[1] == 'STACK':
+        arr.append('acceso')
+        arr.append(t[1])
+        arr.append(t[3])
+        arr.append(t[6])
 
+
+    t[0] = arr
+    
 def p_operacion_aritmetica(t):
     '''operacion_aritmetica : literal MAS literal
                             | literal MENOS literal
                             | literal POR literal
                             | literal DIVIDIDO literal
-                            | literal MODULO literal'''
+                            | literal MODULO literal
+                            | literal'''
     arr = []
-    if t[2] == '+':
+
+    if len(t) == 2:
         arr.append(t[1])
-        arr.append('+')
-        arr.append(t[3])
-    elif t[2] == '-':
-        arr.append(t[1])
-        arr.append('-')
-        arr.append(t[3])
-    if t[2] == '*':
-        arr.append(t[1])
-        arr.append('*')
-        arr.append(t[3])
-    elif t[2] == '/':
-        arr.append(t[1])
-        arr.append('/')
-        arr.append(t[3])
-    elif t[2] == '%':
-        arr.append(t[1])
-        arr.append('%')
-        arr.append(t[3])
-    else:
-        arr.append(t[1])
+    elif len(t) > 2:
+        if t[2] == '+':
+            arr.append(t[1])
+            arr.append('+')
+            arr.append(t[3])
+        elif t[2] == '-':
+            arr.append(t[1])
+            arr.append('-')
+            arr.append(t[3])
+        if t[2] == '*':
+            arr.append(t[1])
+            arr.append('*')
+            arr.append(t[3])
+        elif t[2] == '/':
+            arr.append(t[1])
+            arr.append('/')
+            arr.append(t[3])
+        elif t[2] == '%':
+            arr.append(t[1])
+            arr.append('%')
+            arr.append(t[3])
+
     t[0] = arr
 
 def p_literal(t):
@@ -2494,10 +2537,9 @@ def p_literal(t):
                 | MENOS FDECIMAL
                 | MENOS ENTERO'''
 
-    #print('Entró a literal')
-
-    if t[1] == 'MENOS':
-        t[0] = '-' + t[2]
+    if t[1] == '-':
+        n = '-' + str(t[2])
+        t[0] = n
     else:
         t[0] = t[1]
 

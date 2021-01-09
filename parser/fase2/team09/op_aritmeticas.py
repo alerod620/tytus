@@ -28,7 +28,7 @@ class Aritmetica():
                         nuevo = 'Se elimina la instrucción'
                         regla = '8,'+anterior+','+nuevo+','+str(self.linea)
                         r.Reglas.reglas.append(regla)
-                        code = '\'\'\'Se cumple la regla 8 \n' + anterior + '\nCodigo eliminado\'\'\'\n'
+                        code = '    \'\'\'Se cumple la regla 8 \n    ' + anterior + '\n    Codigo eliminado\'\'\'\n'
                         r.Reglas.pendiente = r.Reglas.pendiente + code
 
                     elif self.literal != valor1:
@@ -36,7 +36,7 @@ class Aritmetica():
                         nuevo = str(self.literal) + ' = ' + str(valor1)
                         regla = '12,'+anterior+','+nuevo+','+str(self.linea)
                         r.Reglas.reglas.append(regla)
-                        code = '#Se cumple la regla 12 \n' + nuevo +'\n'
+                        code = '    #Se cumple la regla 12 \n    ' + nuevo +'\n'
                         r.Reglas.pendiente = r.Reglas.pendiente + code
 
                 #Compara si el valor1 es igual a 0
@@ -48,7 +48,7 @@ class Aritmetica():
                         nuevo = 'Se elimina la instrucción'
                         regla = '8,'+anterior+','+nuevo+','+str(self.linea)
                         r.Reglas.reglas.append(regla)
-                        code = '\'\'\'Se cumple la regla 8 \n' + anterior + '\nCodigo eliminado\'\'\'\n'
+                        code = '    \'\'\'Se cumple la regla 8 \n    ' + anterior + '\n    Codigo eliminado\'\'\'\n'
                         r.Reglas.pendiente = r.Reglas.pendiente + code
 
                     elif self.literal != valor2:
@@ -56,7 +56,7 @@ class Aritmetica():
                         nuevo = str(self.literal) + ' = ' + str(valor2)
                         regla = '12,'+anterior+','+nuevo+','+str(self.linea)
                         r.Reglas.reglas.append(regla)
-                        code = '#Se cumple la regla 12 \n' + nuevo + '\n'
+                        code = '    #Se cumple la regla 12 \n    ' + nuevo + '\n'
                         r.Reglas.pendiente = r.Reglas.pendiente + code
 
                 #Ninguno de los valores es 0
@@ -79,7 +79,7 @@ class Aritmetica():
                         nuevo = 'Se elimina la instrucción'
                         regla = '9,'+anterior+','+nuevo+','+str(self.linea)
                         r.Reglas.reglas.append(regla)
-                        code = '\'\'\'Se cumple la regla 9 \n' + anterior + '\nCodigo eliminado\'\'\'\n'
+                        code = '    \'\'\'Se cumple la regla 9 \n    ' + anterior + '\n    Codigo eliminado\'\'\'\n'
                         r.Reglas.pendiente = r.Reglas.pendiente + code
 
                     elif self.literal != valor1:
@@ -87,7 +87,7 @@ class Aritmetica():
                         nuevo = str(self.literal) + ' = ' + str(valor1)
                         regla = '13,'+anterior+','+nuevo+','+str(self.linea)
                         r.Reglas.reglas.append(regla)
-                        code = '#Se cumple la regla 13 \n' + nuevo + '\n'
+                        code = '    #Se cumple la regla 13 \n    ' + nuevo + '\n'
                         r.Reglas.pendiente = r.Reglas.pendiente + code
 
                 #Compara si el valor1 es igual a 0
@@ -99,7 +99,7 @@ class Aritmetica():
                         nuevo = 'Se elimina la instrucción'
                         regla = '9,'+anterior+','+nuevo+','+str(self.linea)
                         r.Reglas.reglas.append(regla)
-                        code = '\'\'\'Se cumple la regla 9 \n' + anterior + '\nCodigo eliminado\'\'\'\n'
+                        code = '    \'\'\'Se cumple la regla 9 \n    ' + anterior + '\n    Codigo eliminado\'\'\'\n'
                         r.Reglas.pendiente = r.Reglas.pendiente + code
 
                     elif self.literal != valor2:
@@ -107,7 +107,7 @@ class Aritmetica():
                         nuevo = str(self.literal) + ' = ' + str(valor2)
                         regla = '13,'+anterior+','+nuevo+','+str(self.linea)
                         r.Reglas.reglas.append(regla)
-                        code = '#Se cumple la regla 13 \n' + nuevo + '\n'
+                        code = '    #Se cumple la regla 13 \n    ' + nuevo + '\n'
                         r.Reglas.pendiente = r.Reglas.pendiente + code
 
                 #Ninguno de los valores es 0
@@ -129,7 +129,7 @@ class Aritmetica():
                         nuevo = 'Se elimina la instrucción'
                         regla = '10,'+anterior+','+nuevo+','+str(self.linea)
                         r.Reglas.reglas.append(regla)
-                        code = '\'\'\'Se cumple la regla 10 \n' + anterior + '\nCodigo eliminado\'\'\'\n'
+                        code = '    \'\'\'Se cumple la regla 10 \n    ' + anterior + '\n    Codigo eliminado\'\'\'\n'
                         r.Reglas.pendiente = r.Reglas.pendiente + code
 
                     elif self.literal != valor1:
@@ -137,7 +137,7 @@ class Aritmetica():
                         nuevo = str(self.literal) + ' = ' + str(valor1)
                         regla = '14,'+anterior+','+nuevo+','+str(self.linea)
                         r.Reglas.reglas.append(regla)
-                        code = '#Se cumple la regla 14 \n' + nuevo + '\n'
+                        code = '    #Se cumple la regla 14 \n    ' + nuevo + '\n'
                         r.Reglas.pendiente = r.Reglas.pendiente + code
 
                 #Compara si el valor1 es igual a 1
@@ -149,7 +149,7 @@ class Aritmetica():
                         nuevo = 'Se elimina la instrucción'
                         regla = '10,'+anterior+','+nuevo+','+str(self.linea)
                         r.Reglas.reglas.append(regla)
-                        code = '\'\'\'Se cumple la regla 10 \n' + anterior + '\nCodigo eliminado\'\'\'\n'
+                        code = '    \'\'\'Se cumple la regla 10 \n    ' + anterior + '\n    Codigo eliminado\'\'\'\n'
                         r.Reglas.pendiente = r.Reglas.pendiente + code
 
                     elif self.literal != valor2:
@@ -157,7 +157,7 @@ class Aritmetica():
                         nuevo = str(self.literal) + ' = ' + str(valor2)
                         regla = '14,'+anterior+','+nuevo+','+str(self.linea)
                         r.Reglas.reglas.append(regla)
-                        code = '#Se cumple la regla 14 \n' + nuevo + '\n'
+                        code = '    #Se cumple la regla 14 \n    ' + nuevo + '\n'
                         r.Reglas.pendiente = r.Reglas.pendiente + code
 
                 #Verifica si el valor2 es igual a 0
@@ -166,7 +166,7 @@ class Aritmetica():
                     nuevo = str(self.literal) + ' = 0'
                     regla = '17,'+anterior+','+nuevo+','+str(self.linea)
                     r.Reglas.reglas.append(regla)
-                    code = '#Se cumple la regla 17 \n' + nuevo + '\n'
+                    code = '    #Se cumple la regla 17 \n    ' + nuevo + '\n'
                     r.Reglas.pendiente = r.Reglas.pendiente + code
 
                 #Verifica si el valor1 es igual a 0
@@ -175,7 +175,7 @@ class Aritmetica():
                     nuevo = str(self.literal) + ' = 0'
                     regla = '17,'+anterior+','+nuevo+','+str(self.linea)
                     r.Reglas.reglas.append(regla)
-                    code = '#Se cumple la regla 17 \n' + nuevo + '\n'
+                    code = '    #Se cumple la regla 17 \n    ' + nuevo + '\n'
                     r.Reglas.pendiente = r.Reglas.pendiente + code
                     
                 #Verifica si el valor1 es igual a 2
@@ -184,7 +184,7 @@ class Aritmetica():
                     nuevo = str(self.literal) + ' = ' + str(valor2) + ' + ' + str(valor2)
                     regla = '16,'+anterior+','+nuevo+','+str(self.linea)
                     r.Reglas.reglas.append(regla)
-                    code = '#Se cumple la regla 16 \n' + nuevo + '\n'
+                    code = '    #Se cumple la regla 16 \n    ' + nuevo + '\n'
                     r.Reglas.pendiente = r.Reglas.pendiente + code
 
                 #Verifica si el valor2 es igual a 2
@@ -193,7 +193,7 @@ class Aritmetica():
                     nuevo = str(self.literal) + ' = ' + str(valor1) + ' + ' + str(valor1)
                     regla = '16,'+anterior+','+nuevo+','+str(self.linea)
                     r.Reglas.reglas.append(regla)
-                    code = '#Se cumple la regla 16 \n' + nuevo + '\n'
+                    code = '    #Se cumple la regla 16 \n    ' + nuevo + '\n'
                     r.Reglas.pendiente = r.Reglas.pendiente + code
 
                 #Ninguno de los casos anteriores
@@ -214,7 +214,7 @@ class Aritmetica():
                         nuevo = 'Se elimina la instrucción'
                         regla = '11,'+anterior+','+nuevo+','+str(self.linea)
                         r.Reglas.reglas.append(regla)
-                        code = '\'\'\'Se cumple la regla 11 \n' + anterior + '\nCodigo eliminado\'\'\'\n'
+                        code = '    \'\'\'Se cumple la regla 11 \n    ' + anterior + '\n    Codigo eliminado\'\'\'\n'
                         r.Reglas.pendiente = r.Reglas.pendiente + code
 
                     elif self.literal != valor1:
@@ -222,7 +222,7 @@ class Aritmetica():
                         nuevo = str(self.literal) + ' = ' + str(valor1)
                         regla = '15,'+anterior+','+nuevo+','+str(self.linea)
                         r.Reglas.reglas.append(regla)
-                        code = '#Se cumple la regla 15 \n' + nuevo + '\n'
+                        code = '    #Se cumple la regla 15 \n    ' + nuevo + '\n'
                         r.Reglas.pendiente = r.Reglas.pendiente + code
 
                 #Verifica si el valor1 es igual a 0
@@ -231,7 +231,7 @@ class Aritmetica():
                     nuevo = str(self.literal) + ' = 0'
                     regla = '18,'+anterior+','+nuevo+','+str(self.linea)
                     r.Reglas.reglas.append(regla)
-                    code = '#Se cumple la regla 18 \n' + nuevo + '\n'
+                    code = '    #Se cumple la regla 18 \n    ' + nuevo + '\n'
                     r.Reglas.pendiente = r.Reglas.pendiente + code
                     
                 #Ninguno de los casos anteriores
@@ -240,5 +240,5 @@ class Aritmetica():
                     r.Reglas.pendiente = r.Reglas.pendiente + code
 
             elif op == '%':
-                nuevo = str(self.literal) + ' = ' + str(valor1) + ' % ' + str(valor2) + '\n'
+                nuevo = '    ' + str(self.literal) + ' = ' + str(valor1) + ' % ' + str(valor2) + '\n'
                 r.Reglas.pendiente = r.Reglas.pendiente + nuevo
