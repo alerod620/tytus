@@ -87,3 +87,60 @@ class Tipo():
             return "index"
         elif self.tipo == Tipo_Dato.VOID:
             return "void"
+
+    def traducir(self, tabla, controlador, arbol):
+        codigo = 'Tipo(Tipo_Dato.' 
+        if self.tipo == Tipo_Dato.SMALLINT:
+            codigo += 'SMALLINT, '
+        elif self.tipo == Tipo_Dato.INTEGER:
+            codigo += 'INTEGER, '
+        elif self.tipo == Tipo_Dato.BIGINT:
+            codigo += 'BIGINT, '
+        elif self.tipo == Tipo_Dato.DECIMAL:
+            codigo += 'DECIMAL, '
+        elif self.tipo == Tipo_Dato.NUMERIC:
+            codigo += 'NUMERIC, '
+        elif self.tipo == Tipo_Dato.REAL:
+            codigo += 'REAL, '
+        elif self.tipo == Tipo_Dato.DOUBLE_PRECISION:
+            codigo += 'DOUBLE_PRECISION, '
+        elif self.tipo == Tipo_Dato.MONEY:
+            codigo += 'MONEY, '
+        elif self.tipo == Tipo_Dato.CHAR:
+            codigo += 'CHAR, '
+        elif self.tipo == Tipo_Dato.VARCHAR:
+            codigo += 'VARCHAR, '
+        elif self.tipo == Tipo_Dato.VARYING:
+            codigo += 'VARYING, '
+        elif self.tipo == Tipo_Dato.CHARACTER:
+            codigo += 'CHARACTER, '
+        elif self.tipo == Tipo_Dato.TEXT:
+            codigo += 'TEXT, '
+        elif self.tipo == Tipo_Dato.DATE:
+            codigo += 'DATE, '
+        elif self.tipo == Tipo_Dato.TIMESTAMP:
+            codigo += 'TIMESTAMP, '
+        elif self.tipo == Tipo_Dato.TIME:
+            codigo += 'TIME, '
+        elif self.tipo == Tipo_Dato.INTERVAL:
+            codigo += 'INTERVAL, '
+        elif self.tipo == Tipo_Dato.BOOLEAN:
+            codigo += 'BOOLEAN, '
+        elif self.tipo == Tipo_Dato.TIPOENUM:
+            codigo += 'TIPOENUM, '
+        elif self.tipo == Tipo_Dato.ID:
+            codigo += 'ID, '
+        elif self.tipo == Tipo_Dato.QUERY:
+            codigo += 'QUERY, '
+        elif self.tipo == Tipo_Dato.INDEX:
+            codigo += 'INDEX, '
+        elif self.tipo == Tipo_Dato.VOID:
+            codigo += 'VOID, '
+        if self.dimension is None:
+            codigo += 'None)'
+        else:
+            codigo += '['
+            for r in self.dimension:
+                codigo += str(r) + ', '
+            codigo = codigo[0:-2] + '])'
+        return codigo

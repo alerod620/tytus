@@ -4,8 +4,8 @@ from Instrucciones.Expresiones.Enum import Enum
 from storageManager.jsonMode import *
 
 class CreateType(Instruccion):
-    def __init__(self, id, tipo, listaExpre, strGram,linea, columna):
-        Instruccion.__init__(self,tipo,linea,columna, strGram)
+    def __init__(self, id, tipo, listaExpre, strGram, linea, columna):
+        Instruccion.__init__(self, tipo, linea, columna, strGram)
         self.valor = id
         self.listaExpre = listaExpre
 
@@ -28,3 +28,11 @@ class CreateType(Instruccion):
         #print(self.valor + " linea: " + str(self.linea) + " columna: " + str(self.columna))
         arbol.consola.append("Consulta devuelta correctamente.")
 
+    def traducir(self, tabla, controlador, arbol):
+        codigo = 'CreateType.CreateType("' + self.valor + '", None, ['
+        for e in self.listaExpre:
+            codigo += e.traducir(tabla, controlador, arbol) + ', '
+        codigo = codigo[0:-2] + '], "'
+        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
+        #print(codigo)
+        return None

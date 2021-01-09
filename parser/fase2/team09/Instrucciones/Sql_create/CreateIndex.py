@@ -28,6 +28,13 @@ class CreateIndex(Instruccion):
             else:
                 restricciones = restricciones + ", " + self.using
             self.constraint = []
+        self.condicion = self.condicion.ejecutar(tabla, arbol)
+        if self.condicion is not None:
+            if self.unique is None and self.using is None:
+                restricciones = restricciones + self.condicion
+            else:
+                restricciones = restricciones + ", " + self.condicion
+            self.constraint = []
         restricciones = restricciones
         if self.constraint is not None:
             self.constraint.append(Cons(restricciones, "restricciones"))

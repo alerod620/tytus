@@ -35,7 +35,7 @@ reservadas = (
     'EXTRACT', 'YEAR', 'MONTH', 'DAY', 'HOUR', 'MINUTE', 'SECOND',
     'NOW', 'DATE_PART','CURRENT_DATE', 'CURRENT_TIME',
     # BOOLEAN TYPE
-    'BOOLEAN', 'TRUE', 'FALSE',
+    'BOOLEAN', 'TRUE', 'FALSE', 'OFF',
     # OPERADORES LOGICOS
     'AND', 'OR', 'NOT',
     # SENTENCIAS DML
@@ -118,8 +118,6 @@ tokens = reservadas + (
     'ID',
     'CADENA',
     'CARACTER',
-    'COMENTARIO_MULTILINEA',
-    'COMENTARIO_SIMPLE',
     'ARROBA',
     'ETIQUETA',
     'IGUALIGUAL',
@@ -175,7 +173,6 @@ def t_CADENA(t):
 def t_CARACTER(t):
     r'\'.*?\''
     t.value = t.value[1:-1]  # remuevo las comillas simples
-    #print('esto es un caracter: ', t.value)
     return t
 
 def t_FDECIMAL(t):

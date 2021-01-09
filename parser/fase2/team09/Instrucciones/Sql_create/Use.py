@@ -5,7 +5,7 @@ from Instrucciones.Tablas.BaseDeDatos import BaseDeDatos
 
 class Use(Instruccion):
     def __init__(self, id, strGram ,linea, columna):
-        Instruccion.__init__(self,None,linea,columna,strGram)
+        Instruccion.__init__(self, None, linea, columna, strGram)
         self.valor = id
 
     def ejecutar(self, tabla, arbol):
@@ -29,8 +29,9 @@ class Use(Instruccion):
         arbol.excepciones.append(error)
         arbol.consola.append(error.toString())
         #print(self.valor + " linea: " + str(self.linea) + " columna: " + str(self.columna))
-'''
-instruccion = Use("hola mundo",None, 1,2)
 
-instruccion.ejecutar(None,None)
-'''
+    def traducir(self, tabla, controlador, arbol):
+        codigo = 'Use.Use("' + self.valor + '", "'
+        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
+        #print(codigo)
+        return None

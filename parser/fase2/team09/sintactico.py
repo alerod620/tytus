@@ -85,7 +85,7 @@ def p_op_unique1(t):
     '''op_unique : UNIQUE
     '''
     strGram = "<op_unique> ::= UNIQUE"
-    t[0] = Undefined.Undefined("UNIQUE", "", strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Undefined.Undefined(t[1], "", strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_op_unique2(t):
     '''op_unique : 
@@ -97,7 +97,7 @@ def p_op_using1(t):
     '''op_using : USING HASH
     '''
     strGram = "<op_using> ::= USING HASH"
-    t[0] = Undefined.Undefined("USING", " HASH", strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Undefined.Undefined(t[1], " " + t[2], strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_op_using2(t):
     '''op_using : 
@@ -116,8 +116,7 @@ def p_ls_index_col2(t):
     '''ls_index_col : val_index_col
     '''
     strGram = "<ls_index_col> ::= <val_index_col>"
-    t[0] = []
-    t[0].append(t[1])
+    t[0] = [t[1]]
 
 def p_ls_index_col3(t):
     '''ls_index_col : PARIZQ ls_index_col PARDER
@@ -141,13 +140,13 @@ def p_op_order1(t):
     '''op_order : ASC
     '''
     strGram = "<op_order> ::= ASC"
-    t[0] = Undefined.Undefined("", "ASC", strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Undefined.Undefined("", t[1], strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_op_order2(t):
     '''op_order : DESC
     '''
     strGram = "<op_order> ::= DESC"
-    t[0] = Undefined.Undefined("", "DESC", strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Undefined.Undefined("", t[1], strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_op_order3(t):
     '''op_order : 
@@ -159,13 +158,13 @@ def p_op_null1(t):
     '''op_null : NULLS FIRST
     '''
     strGram = "<op_null> ::= NULLS FIRST"
-    t[0] = Undefined.Undefined("NULLS", " FIRST", strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Undefined.Undefined(t[1], " " + t[2], strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_op_null2(t):
     '''op_null : NULLS LAST
     '''
     strGram = "<op_null> ::= NULLS LAST"
-    t[0] = Undefined.Undefined("NULLS", " LAST", strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Undefined.Undefined(t[1], " " + t[2], strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_op_null3(t):
     '''op_null : 
@@ -174,17 +173,163 @@ def p_op_null3(t):
     t[0] = Undefined.Undefined("NULLS", None, strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_op_where1(t):
-    '''op_where : WHERE expre
+    '''op_where : WHERE ls_where
     '''
-    strGram = "<instructionWhere> ::=  WHERE <expre>"
-    t[0] = Where.Where(t[2], None, strGram, t.lexer.lineno, t.lexer.lexpos)
+    strGram = "<op_where> ::=  WHERE <expre>"
+    t[0] = Undefined.Undefined(t[1], t[2], strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_op_where2(t):
     '''op_where : 
     '''
     strGram = "<op_where> ::= "
     t[0] = Undefined.Undefined("WHERE", None, strGram, t.lexer.lineno, t.lexer.lexpos)
-    
+
+def p_ls_where1(t):
+    '''ls_where : ls_where c_where
+    '''
+    t[0] = t[1] + " " + t[2]
+
+def p_ls_where2(t):
+    '''ls_where : c_where
+    '''
+    t[0] = " " + t[1]
+
+def p_c_where1(t):
+    '''c_where : EXTRACT
+            | PARIZQ
+            | FROM
+            | PARDER
+            | NOW
+            | END
+            | DATE_PART
+            | FALSE 
+            | CURRENT_DATE
+            | CURRENT_TIME
+            | ATAN2D
+            | ACOS
+            | ACOSD
+            | ACOSH
+            | ASIND
+            | ASIN
+            | ASINH
+            | ATAN
+            | ATAN2
+            | CASE
+            | ATAND
+            | ATANH
+            | COS
+            | TAN
+            | IN
+            | COSH
+            | COT
+            | COTD
+            | SIN
+            | SIND
+            | SINH
+            | COSD
+            | MD5
+            | TANH
+            | CONVERT
+            | TAND
+            | DECODE
+            | ENCODE
+            | GET_BYTE
+            | LENGTH
+            | AS
+            | SET_BYTE
+            | SHA256
+            | SUBSTR
+            | SUBSTRING
+            | TRIM
+            | ABS
+            | CBRT
+            | CEIL
+            | FACTORIAL
+            | DEGREES
+            | DIV
+            | EXP
+            | CEILING
+            | PI
+            | GCD
+            | LCM
+            | LN
+            | LOG
+            | LOG10
+            | MIN_SCALE
+            | MOD
+            | FLOOR
+            | POWER
+            | RADIANS
+            | RANDOM
+            | ROUND
+            | SCALE
+            | TRIM_SCALE
+            | SIGN
+            | SQRT
+            | SETSEED
+            | TRUNC
+            | WIDTH_BUCKET
+            | NOT
+            | AND
+            | DISTINTO
+            | IGUAL
+            | MAYORQ
+            | MENORQ
+            | MAYOR_IGUALQ
+            | MENOR_IGUALQ
+            | POR
+            | MENOS
+            | OR
+            | DIVIDIDO
+            | EXPONENCIACION
+            | MODULO
+            | TOP
+            | BETWEEN
+            | PRECISION
+            | COUNT
+            | GREATEST
+            | LEAST
+            | TIMESTAMP
+            | MIN
+            | SUM
+            | AVG
+            | INT
+            | DATE
+            | VARCHAR
+            | INTERVAL
+            | CHARACTER
+            | VARYING
+            | DOUBLE
+            | DECIMAL
+            | INTEGER
+            | BIGINT
+            | NUMERIC
+            | MAX
+            | TEXT
+            | LIKE
+            | BOOLEAN
+            | REAL
+            | TIME
+            | OFF
+            | ID
+            | SMALLINT
+            | ENTERO
+            | FDECIMAL
+            | ON
+            | PUNTO
+            | ARROBA
+            | TRUE
+            | COMA
+            | CHAR
+    '''
+    t[0] = t[1]
+
+def p_c_where2(t):
+    '''c_where : CADENA
+                | CARACTER
+    '''
+    t[0] = "'" + t[1] + "'"
+
 # DROP INDEX
 def p_instruccion_drop_index1(t):
     '''instruccion : DROP INDEX op_exists ID PUNTO_COMA
@@ -241,35 +386,6 @@ def p_op_alter3(t):
     '''op_alter : 
     '''
     t[0] = "<op_alter> ::= "
-
-# EXEC
-def p_instruccion_execute(t):
-    '''instruccion : EXECUTE llamada PUNTO_COMA
-    '''
-    strGram = "<instruccion> ::= EXECUTE <llamada>"
-    t[0] = Execute.Execute(t[2].nombre, t[2].parametros, strGram, t.lexer.lineno, t.lexer.lexpos)
-
-def p_llamada1(t):
-    '''llamada : ID PARIZQ PARDER
-    '''
-    strGram = "<llamada> ::= ID PARIZQ PARDER"
-    t[0] = Llamada.Llamada(t[1], [], strGram, t.lexer.lineno, t.lexer.lexpos)
-
-def p_llamada2(t):
-    '''llamada : ID PARIZQ list_exp PARDER
-    '''
-    strGram = "<llamada> ::= ID PARIZQ <list_exp> PARDER"
-    t[0] = Llamada.Llamada(t[1], t[3], strGram, t.lexer.lineno, t.lexer.lexpos)
-
-def p_list_exp1(t):
-    '''list_exp : list_exp COMA expresion
-    '''
-    strGram = "<list_exp> ::= <list_exp> COMA <expresion>"
-
-def p_list_exp2(t):
-    '''list_exp : expresion
-    '''
-    strGram = "<list_exp> ::= <expresion>"
 
 # CREATE DATABASE
 def p_instruccion_create_database1(t):
@@ -404,37 +520,37 @@ def p_instruccion_create1(t):
     '''instruccion : CREATE TABLE ID PARIZQ campos PARDER PUNTO_COMA
     '''
     strGram = "<instruccion> ::= CREATE TABLE ID PARIZQ <campos> PARDER PUNTO_COMA"
-    t[0] =CreateTable.CreateTable(t[3], None, t[5], None, strGram,t.lexer.lineno, t.lexer.lexpos)
+    t[0] = CreateTable.CreateTable(t[3], None, t[5], None, strGram,t.lexer.lineno, t.lexer.lexpos)
 
 def p_instruccion_create2(t):
     '''instruccion : CREATE TABLE ID PARIZQ campos PARDER INHERITS PARIZQ ID PARDER PUNTO_COMA
     '''
     strGram = "<instruccion> ::= CREATE TABLE ID PARIZQ <campos> PARDER INHERITS PARIZQ ID PARDER PUNTO_COMA"
-    t[0] =CreateTable.CreateTable(t[3],None, t[5], t[9], strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = CreateTable.CreateTable(t[3],None, t[5], t[9], strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_instruccion_use(t):
     '''instruccion : USE ID PUNTO_COMA
     '''
     strGram = "<instruccion> ::= USE ID PUNTO_COMA"
-    t[0] =Use.Use(t[2], strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Use.Use(t[2], strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_instruccion_show_database1(t):
     '''instruccion : SHOW DATABASES PUNTO_COMA
     '''
     strGram = "<instruccion> ::= SHOW DATABASES PUNTO_COMA"
-    t[0] =ShowDatabases.ShowDatabases(None, None, strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = ShowDatabases.ShowDatabases(None, None, strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_instruccion_show_database2(t):
     '''instruccion : SHOW DATABASES LIKE CARACTER PUNTO_COMA
     '''
     strGram = "<instruccion> ::= SHOW DATABASES LIKE CARACTER PUNTO_COMA"
-    t[0] =ShowDatabases.ShowDatabases(t[4],None, strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = ShowDatabases.ShowDatabases(t[4], None, strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_instruccion_create_enumerated_type(t):
     '''instruccion : CREATE TYPE ID AS ENUM PARIZQ l_expresiones PARDER PUNTO_COMA
     '''
     strGram = "<instruccion> ::= CREATE TYPE ID AS ENUM PARIZQ <l_expresiones> PARDER PUNTO_COMA"
-    t[0] =CreateType.CreateType(t[3],None,t[7], strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = CreateType.CreateType(t[3], None, t[7], strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_instruccion_truncate(t):
     '''instruccion : TRUNCATE TABLE ID PUNTO_COMA
@@ -497,6 +613,36 @@ def p_columunas_delete(t):
     strGram = "<instruccion> ::= DELETE FROM ID <instructionWhere> PUNTO_COMA"
     t[0] = DeleteTable.DeleteTable(t[3],None, t[4], strGram, t.lexer.lineno, t.lexer.lexpos)
 
+# EXEC
+def p_instruccion_execute(t):
+    '''instruccion : EXECUTE llamada PUNTO_COMA
+    '''
+    strGram = "<instruccion> ::= EXECUTE <llamada>"
+    t[0] = Execute.Execute(t[2].nombre, t[2].parametros, strGram, t.lexer.lineno, t.lexer.lexpos)
+
+def p_llamada1(t):
+    '''llamada : ID PARIZQ PARDER
+    '''
+    strGram = "<llamada> ::= ID PARIZQ PARDER"
+    t[0] = Llamada.Llamada(t[1], [], strGram, t.lexer.lineno, t.lexer.lexpos)
+
+def p_llamada2(t):
+    '''llamada : ID PARIZQ list_exp PARDER
+    '''
+    strGram = "<llamada> ::= ID PARIZQ <list_exp> PARDER"
+    t[0] = Llamada.Llamada(t[1], t[3], strGram, t.lexer.lineno, t.lexer.lexpos)
+
+def p_list_exp1(t):
+    '''list_exp : list_exp COMA expresion
+    '''
+    strGram = "<list_exp> ::= <list_exp> COMA <expresion>"
+
+def p_list_exp2(t):
+    '''list_exp : expresion
+    '''
+    strGram = "<list_exp> ::= <expresion>"
+    t[0] = [t[1]]
+
 #FUNCIONES
 def p_functions(t):
     ''' instruccion : CREATE FUNCTION ID PARIZQ op_lpar PARDER RETURNS tipo AS body LANGUAGE PLPGSQL PUNTO_COMA
@@ -533,8 +679,7 @@ def p_l_par2(t):
     '''l_par : par
     '''
     strGram = "<l_par> ::= <par>"
-    t[0] = []
-    t[0].append(t[1])
+    t[0] = [t[1]]
 
 def p_par1(t):
     '''par : ID tipo  
@@ -591,8 +736,7 @@ def p_l_seg2(t):
     '''l_seg : segment
     '''
     strGram = "<l_seg> ::= <segment>"
-    t[0] = []
-    t[0].append(t[1])
+    t[0] = [t[1]]
 
 def p_segment1(t):
     '''segment : ID op_constant tipo op_nulo op_asig PUNTO_COMA
@@ -650,33 +794,25 @@ def p_op_asig1(t):
     '''op_asig : DEFAULT expresion
     '''
     strGram = "<op_asig> ::= DEFAULT <expresion>"
-    t[0] = []
-    t[0].append(strGram)
-    t[0].append(t[2])
+    t[0] = [strGram, t[2]]
 
 def p_op_asig2(t):
     '''op_asig : DP_IGUAL expresion
     '''
     strGram = "<op_asig> ::= DP_IGUAL <expresion>"
-    t[0] = []
-    t[0].append(strGram)
-    t[0].append(t[2])
+    t[0] = [strGram, t[2]]
 
 def p_op_asig3(t):
     '''op_asig : IGUAL expresion
     '''
     strGram = "<op_asig> ::= IGUAL <expresion>"
-    t[0] = []
-    t[0].append(strGram)
-    t[0].append(t[2])
+    t[0] = [strGram, t[2]]
 
 def p_op_asig4(t):
     '''op_asig :
     '''
     strGram = "<op_asig> ::= "
-    t[0] = []
-    t[0].append(strGram)
-    t[0].append(None)
+    t[0] = [strGram, None]
 
 def p_statements1(t):
     '''statements : statements statement
@@ -689,8 +825,7 @@ def p_statements2(t):
     '''statements : statement
     '''
     strGram = "<statements> ::= <statement>"
-    t[0] = []
-    t[0].append(t[1])
+    t[0] = [t[1]]
 
 def p_statement1(t):
     '''statement : instruccion
@@ -1821,60 +1956,47 @@ def p_campos_tablas(t):
     '''
     #ESTOY HACIENDO ESTA
     strGram = "<campos> ::= <campos> COMA ID <tipo> <lista_op>"
-    t[1].append(CColumna.Columna(t[3],t[4],t[5], strGram, t.lineno,t.lexpos))
+    t[1].append(CColumna.Columna(t[3], t[4], t[5], strGram, t.lineno, t.lexpos))
     t[0] =t[1]
 
 def p_campos_tablas1(t):
     '''campos : campos COMA ID tipo
     '''
     strGram = "<campos> ::= <campos> COMA ID tipo"
-    t[1].append(CColumna.Columna(t[3],t[4],None,strGram,t.lineno,t.lexpos))
+    t[1].append(CColumna.Columna(t[3], t[4], None, strGram, t.lineno, t.lexpos))
     t[0] =t[1]
-
-#def p_campos_tablas2(t):
-#    '''campos : campos COMA CHECK expre
-#    '''
-    #AQUI ESTOY TRABAJANDO
-#    t[1].append(Tipo_Constraint(None,Tipo_Dato_Constraint.CHECK,t[4]))
-#    t[0] = t[1]
-
-#def p_campos_tablas3(t):
-#    '''campos : campos COMA CONSTRAINT ID CHECK expre
-#    '''
-#    t[1].append(Tipo_Constraint(t[4],Tipo_Dato_Constraint.CHECK,t[4]))
-#    t[0] = t[1]
 
 def p_campos_tablas4(t):
     '''campos : campos COMA UNIQUE PARIZQ lista_id PARDER
     '''
     strGram = "<campos> ::= <campos> COMA UNIQUE PARIZQ <lista_id> PARDER"
-    t[1].append(Tipo_Constraint(None,Tipo_Dato_Constraint.UNIQUE,t[5]))
+    t[1].append(Tipo_Constraint(None, Tipo_Dato_Constraint.UNIQUE, t[5]))
     t[0] = t[1]
 
 def p_campos_tablas5(t):
     '''campos : campos COMA FOREIGN KEY PARIZQ lista_id PARDER REFERENCES ID PARIZQ lista_id PARDER
     '''
     strGram = "<campos> ::= <campos> COMA FOREIGN KEY PARIZQ <lista_id> PARDER REFERENCES ID PARIZQ <lista_id> PARDER"
-    t[1].append(Tipo_Constraint(t[6],Tipo_Dato_Constraint.FOREIGN_KEY,Tipo_Constraint([9],Tipo_Dato_Constraint.REFERENCES,t[11])))
+    t[1].append(Tipo_Constraint(t[6], Tipo_Dato_Constraint.FOREIGN_KEY, Tipo_Constraint([9], Tipo_Dato_Constraint.REFERENCES, t[11])))
     t[0] = t[1]
 
 def p_campos_tablas6(t):
     '''campos : campos COMA PRIMARY KEY PARIZQ lista_id PARDER
     '''
-    t[1].append(Tipo_Constraint(None,Tipo_Dato_Constraint.PRIMARY_KEY,t[6]))
+    t[1].append(Tipo_Constraint(None, Tipo_Dato_Constraint.PRIMARY_KEY, t[6]))
     t[0] = t[1]
 
 def p_campos_tablas7(t):
     '''campos : ID tipo lista_op
     '''
     strGram = "<campos> ::= ID <tipo> <lista_op>"
-    t[0] = [CColumna.Columna(t[1],t[2],t[3], strGram, t.lineno,t.lexpos)]
+    t[0] = [CColumna.Columna(t[1], t[2], t[3], strGram, t.lineno, t.lexpos)]
 
 def p_campos_tablas8(t):
     '''campos : ID tipo
     '''
     strGram = "<campos> ::= ID <tipo>"
-    t[0] = [CColumna.Columna(t[1],t[2],None,strGram,t.lineno,t.lexpos)]
+    t[0] = [CColumna.Columna(t[1], t[2], None, strGram, t.lineno, t.lexpos)]
 
 def p_lista_id1(t):
     '''lista_id : lista_id COMA ID
@@ -2038,6 +2160,7 @@ def p_expresion8(t):
 
 def p_expresion9(t):
     '''expresion : TRUE
+                 | ON
     '''
     strGram = "<l_expresiones> ::= <l_expresiones> COMA <expre>\n"
     strGram = strGram + "<l_expresiones> ::= <expre>\n"
@@ -2046,6 +2169,7 @@ def p_expresion9(t):
 
 def p_expresion10(t):
     '''expresion : FALSE
+                 | OFF
     '''
     strGram = "<l_expresiones> ::= <l_expresiones> COMA <expre>\n"
     strGram = strGram + "<l_expresiones> ::= <expre>\n"
@@ -2109,12 +2233,6 @@ def p_tipo_datos1(t):
     '''
     t[0]=Tipo(Tipo_Dato.DATE)
 
-# NO RECUERDO PARA QUE IMPLEMENTAMOS ESTA PARTE ENTONCES LA COMENTE
-#def p_tipo_datos2(t):
-#    '''tipo : ID PARIZQ ID PARDER
-#    '''
-#    t[0]=t[1]
-
 def p_tipo_datos_varchar(t):
     '''tipo : VARCHAR PARIZQ ENTERO PARDER
     '''
@@ -2144,84 +2262,67 @@ def p_tipo_datos_varchar4(t):
 def p_tipo_datos_decimal(t):
     '''tipo : DECIMAL PARIZQ ENTERO COMA ENTERO PARDER
     '''
-    t[0]= Tipo(Tipo_Dato.DECIMAL,[t[3],t[5]])
+    t[0] = Tipo(Tipo_Dato.DECIMAL, [t[3],t[5]])
 
-#def p_tipo_datos_decimal1(t):
-#    '''tipo : DOUBLE
-#    '''
-#    t[0] = Tipo(Tipo_Dato.DOUBLE_PRECISION)
-    
 def p_tipo_datos_decimal2(t):
     '''tipo : DECIMAL
     '''
-    t[0]=Tipo(Tipo_Dato.DECIMAL)
-
-#ESTE NO SE CONTEMPLO EN LA GRAMATICA
-#def p_tipo_datos_decimal3(t):
-#    '''tipo : FLOAT PARIZQ ENTERO COMA ENTERO PARDER
-#    '''
-#    t[0]= 
-
-#HAY QUE VALIDAR ESTE, CREO QUE ESTA DEMAS ACA
-#def p_tipo_datos_int(t):
-#    '''tipo : ENTERO
-#    '''
-#    t[0]=Tipo(Tipo_Dato.INTEGER)
+    t[0] = Tipo(Tipo_Dato.DECIMAL)
 
 def p_tipo_datos_int1(t):
     '''tipo : SMALLINT
     '''
-    t[0]=Tipo(Tipo_Dato.SMALLINT)
+    t[0] = Tipo(Tipo_Dato.SMALLINT)
 
 def p_tipo_datos_int2(t):
     '''tipo : INTEGER
     '''
-    t[0]=Tipo(Tipo_Dato.INTEGER)
+    t[0] = Tipo(Tipo_Dato.INTEGER)
 
 def p_tipo_datos_int3(t):
     '''tipo : BIGINT
     '''
-    t[0]=Tipo(Tipo_Dato.BIGINT)
+    t[0] = Tipo(Tipo_Dato.BIGINT)
 
 def p_tipo_datos_int4(t):
     '''tipo : NUMERIC
     '''
-    t[0]=Tipo(Tipo_Dato.NUMERIC)
+    t[0] = Tipo(Tipo_Dato.NUMERIC)
 
 def p_tipo_datos_int5(t):
     '''tipo : REAL
     '''
-    t[0]=Tipo(Tipo_Dato.REAL)
+    t[0] = Tipo(Tipo_Dato.REAL)
 
 def p_tipo_datos_int6(t):
     '''tipo : DOUBLE PRECISION
     '''
-    t[0]=Tipo(Tipo_Dato.DOUBLE_PRECISION)
+    t[0] = Tipo(Tipo_Dato.DOUBLE_PRECISION)
 
 def p_tipo_datos_int7(t):
     '''tipo : MONEY
     '''
-    t[0]=Tipo(Tipo_Dato.MONEY)
+    t[0] = Tipo(Tipo_Dato.MONEY)
 
 def p_tipo_datos_int8(t):
     '''tipo : BOOLEAN
     '''
-    t[0]=Tipo(Tipo_Dato.BOOLEAN)
+    t[0] = Tipo(Tipo_Dato.BOOLEAN)
 
 def p_tipo_datos_date(t):
     '''tipo : TIMESTAMP
     '''
-    t[0]=Tipo(Tipo_Dato.TIMESTAMP)
+    t[0] = Tipo(Tipo_Dato.TIMESTAMP)
 
 def p_tipo_datos_date1(t):
     '''tipo : TIME
     '''
-    t[0]=Tipo(Tipo_Dato.TIME)
+    t[0] = Tipo(Tipo_Dato.TIME)
 
 def p_tipo_datos_date2(t):
     '''tipo : INTERVAL
     '''
-    t[0]=Tipo(Tipo_Dato.INTERVAL)
+    t[0] = Tipo(Tipo_Dato.INTERVAL)
 
 def p_tipo_datos2(t):
     '''tipo : ID 

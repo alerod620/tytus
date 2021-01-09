@@ -9,12 +9,11 @@ from Instrucciones.Tablas.Tablas import Tablas
 from Instrucciones.TablaSimbolos.Tipo import Tipo, Tipo_Dato
 
 class CreateTable(Instruccion):
-    def __init__(self, tabla, tipo, campos, herencia, strGram ,linea, columna):
-        Instruccion.__init__(self,tipo,linea,columna, strGram)
+    def __init__(self, tabla, tipo, campos, herencia, strGram, linea, columna):
+        Instruccion.__init__(self, tipo, linea, columna, strGram)
         self.tabla = tabla
         self.campos = campos
         self.herencia = herencia
-    
 
     def ejecutar(self, tabla, arbol):
         super().ejecutar(tabla,arbol)
@@ -182,6 +181,22 @@ class CreateTable(Instruccion):
             error = Excepcion("100","Semantico","No ha seleccionado ninguna Base de Datos.",self.linea,self.columna)
             arbol.excepciones.append(error)
             arbol.consola.append(error.toString())
+
+    def traducir(self, tabla, controlador, arbol):
+        codigo = 'CreateTable.CreateTable("' + self.tabla + '", None, [' 
+        for c in self.campos:
+            codigo += c.traducir(tabla, controlador, arbol) + ', '
+        codigo = codigo[0:-2] + '], '
+        if self.herencia is None:
+            codigo += 'None, "'
+        else:
+            codigo += '['
+            for c in self.herencia:
+                codigo += c.traducir(tabla, controlador, arbol) + ', '
+            codigo = codigo[0:-2] + '], "'
+        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
+        #print(codigo)
+        return None
 
 class IdentificadorColumna(Instruccion):
     def __init__(self, id, linea, columna):

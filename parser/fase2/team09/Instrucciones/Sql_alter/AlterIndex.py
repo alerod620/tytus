@@ -86,3 +86,9 @@ class AlterIndex(Instruccion):
                             return
                 self.ncolum = Excepcion("INX04", "Semántico", "El número de columna «" + str(indice) + "» no se encuentra en el rango de campos de la tabla «" + ntabla + "».", self.linea, self.columna)
                 return
+
+    def traducir(self, tabla, controlador, arbol):
+        codigo = 'AlterIndex.AlterIndex(' + str(self.existe) + ', "' + self.nombre + '", "' + self.vcolum + '", "' + self.ncolum + '", "'
+        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
+        #print(codigo)
+        return None

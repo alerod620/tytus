@@ -8,7 +8,7 @@ from storageManager.jsonMode import *
 
 class CreateOrReplace(Instruccion):
     def __init__(self, base, tipo, existe, owner, mode, strGram ,linea, columna):
-        Instruccion.__init__(self,tipo,linea,columna, strGram)
+        Instruccion.__init__(self, tipo, linea, columna, strGram)
         self.base=base
         self.tipo=tipo
         self.existe = existe
@@ -78,6 +78,7 @@ class CreateOrReplace(Instruccion):
             codigo += 'None, '
         else:
             codigo += '"' + self.owner + '", '
-        codigo += str(self.mode) + ', "' + self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
+        codigo += str(self.mode) + ', "'
+        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
         #print(codigo)
         return None
