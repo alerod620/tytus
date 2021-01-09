@@ -138,9 +138,11 @@ class Tipo():
             codigo += 'VOID, '
         if self.dimension is None:
             codigo += 'None)'
-        else:
+        elif self.dimension is list:
             codigo += '['
             for r in self.dimension:
                 codigo += str(r) + ', '
             codigo = codigo[0:-2] + '])'
+        else:
+            codigo += str(self.dimension) + ')'
         return codigo

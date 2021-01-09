@@ -73,12 +73,12 @@ class CreateOrReplace(Instruccion):
         '''
 
     def traducir(self, tabla, controlador, arbol):
-        codigo = 'CreateOrReplace.CreateOrReplace("' + self.base + '", None, "' + self.existe + '", '
+        codigo  = '\t#CREATE DATABASE\n\tCreateOrReplace.CreateOrReplace("'
+        codigo += self.base + '", None, "' + self.existe + '", '
         if self.owner is None:
-            codigo += 'None, '
+            codigo += 'None, ' + str(self.mode) + ', "'
         else:
-            codigo += '"' + self.owner + '", '
-        codigo += str(self.mode) + ', "'
-        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
-        #print(codigo)
-        return None
+            codigo += '"' + self.owner + '", ' + str(self.mode) + ', "'
+        codigo += self.strGram + '", ' + str(self.linea) + ', '
+        codigo += str(self.columna) + ').ejecutar(tabla, arbol)\n'
+        controlador.append_3d_ejecutar(codigo)

@@ -41,7 +41,7 @@ class DropTable(Instruccion):
        # showTables(bd)
 
     def traducir(self, tabla, controlador, arbol):
-        codigo = 'DropTable.DropTable("' + self.id + '", None, "'
-        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
-        #print(codigo)
-        return None
+        codigo  = '\t#DROP TABLE\n\tDropTable.DropTable("' + self.id + '", None, "'
+        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna)
+        codigo += ').ejecutar(tabla, arbol)\n'
+        controlador.append_3d_ejecutar(codigo)

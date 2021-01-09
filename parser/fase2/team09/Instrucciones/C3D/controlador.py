@@ -2,7 +2,20 @@
 class controlador():
     def __init__(self):
         #encabezado del archivo de salia en python
-        self.c3d = '\nfrom goto import with_goto \n \n#declaracion de heap y stack \nheap = [10000] \nstack = [10000] \nP = 0 \nH = 0 \n'
+        self.c3d  = 'from Instrucciones.Sql_alter import AlterDatabase, AlterDBOwner, AlterIndex, AlterTable, AlterTableAddColumn, AlterTableAddConstraintFK, Columna, AlterTableDropColumn, AlterTableAddConstraint, AlterTableAddFK, AlterTableAlterColumn, AlterTableDropConstraint, AlterTableAlterColumnType, AlterTableAddCheck\n'
+        self.c3d += 'from Instrucciones.Sql_create import CreateDatabase, CreateIndex, Campo, CreateOrReplace, CreateTable, CreateType, Use, ShowDatabases,Set\n'
+        self.c3d += 'from Instrucciones.Sql_create import Columna as CColumna\n'
+        self.c3d += 'from Instrucciones.Sql_create.Tipo_Constraint import *\n'
+        self.c3d += 'from Instrucciones.Sql_drop import DropDatabase, DropIndex, DropTable\n'
+        self.c3d += 'from Instrucciones.TablaSimbolos.Instruccion import Instruccion\n'
+        self.c3d += 'from Instrucciones.TablaSimbolos.Tipo import Tipo, Tipo_Dato\n'
+        self.c3d += 'from Instrucciones.Undefined import Undefined\n'
+        self.c3d += 'from Instrucciones.TablaSimbolos.Tabla import Tabla\n'
+        self.c3d += 'from Instrucciones.TablaSimbolos.Arbol import Arbol\n'
+        self.c3d += 'from goto import with_goto\n'
+        self.c3d += 'tabla = Tabla(None)\n'
+        self.c3d += 'arbol = Arbol(None)\n'
+        self.c3d += '\n#declaracion de heap y stack \nheap = [10000] \nstack = [10000] \nP = 0 \nH = 0 \n'
         
         self.cont_temp = 0
         self.etiquetas = 0

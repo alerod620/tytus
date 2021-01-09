@@ -33,7 +33,8 @@ class DropIndex(Instruccion):
                     return
 
     def traducir(self, tabla, controlador, arbol):
-        codigo = 'DropIndex.DropIndex(' + str(self.existe) + ',"' + self.nombre + '", "'
-        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
-        #print(codigo)
-        return None
+        codigo  = '\t#DROP INDEX\n\tDropIndex.DropIndex(' + str(self.existe) + ', "'
+        codigo += self.nombre + '", "' + self.strGram.replace("\n", "\\n") + '", '
+        codigo += str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, '
+        codigo += 'arbol)'
+        controlador.append_3d_ejecutar(codigo)

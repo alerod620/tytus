@@ -1,5 +1,6 @@
 from Instrucciones.TablaSimbolos.Instruccion import Instruccion
 from storageManager.jsonMode import *
+
 class DropDatabase(Instruccion):
     def __init__(self, id, tipo, existe, opcion, strGram, linea, columna):
         Instruccion.__init__(self,tipo,linea,columna, strGram)
@@ -34,7 +35,8 @@ class DropDatabase(Instruccion):
             arbol.consola.append(error.toString())
 
     def traducir(self, tabla, controlador, arbol):
-        codigo = 'DropDatabase.DropDatabase("' + self.id + '", None, ' + str(self.existe) + ', ' + str(self.opcion) + ', "'
-        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
-        #print(codigo)
-        return None
+        codigo  = '\t#DROP DATABASE\n\tDropDatabase.DropDatabase("' + self.id + '", '
+        codigo += 'None, ' + str(self.existe) + ', ' + str(self.opcion) + ', "'
+        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna)
+        codigo += ').ejecutar(tabla, arbol)'
+        controlador.append_3d_ejecutar(codigo)

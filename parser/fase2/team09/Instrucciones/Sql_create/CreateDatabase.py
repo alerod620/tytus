@@ -43,11 +43,12 @@ class CreateDatabase(Instruccion):
             arbol.setListaBd(nueva)
 
     def traducir(self, tabla, controlador, arbol):
-        codigo = 'CreateDatabase.CreateDatabase("' + self.base + '", None, "' + self.existe + '", '
+        codigo  = '\t#CREATE DATABASE\n\tCreateDatabase.CreateDatabase("' + self.base
+        codigo += '", None, "' + self.existe + '", '
         if self.owner is None:
-            codigo += 'None, '
+            codigo += 'None, ' + str(self.mode) + ', "'
         else:
-            codigo += '"' + self.owner + '", '
-        codigo += str(self.mode) + ', "' + self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
-        #print(codigo)
-        return None
+            codigo += '"' + self.owner + '", ' + str(self.mode) + ', "'
+        codigo += self.strGram + '", ' + str(self.linea) + ', '
+        codigo += str(self.columna) + ').ejecutar(tabla, arbol)\n'
+        controlador.append_3d_ejecutar(codigo)

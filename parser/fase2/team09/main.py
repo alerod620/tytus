@@ -25,31 +25,6 @@ import sintactico
 
 global arbol
 arbol = None
-'''
-instruccion = CreateDatabase("bd1",None,"TRUE",None,None,None,None, 1,2)
-instruccion.ejecutar(None,None)
-
-# ---------------------------- PRUEBA DE UNA SUMA  ----------------------------
-from Instrucciones.TablaSimbolos.Tipo import Tipo_Dato, Tipo
-from Instrucciones.Expresiones import Primitivo, Logica
-
-p1 = Primitivo.Primitivo(True,Tipo(Tipo_Dato.BOOLEAN),1,1)
-p2 = Primitivo.Primitivo(True,Tipo(Tipo_Dato.BOOLEAN),1,1)
-a = Arbol([])
-op = Logica.Logica(p1,p2,'AND',1,2)
-print('Resultado logica: ' + str(suma.ejecutar(None,a)))
-
-# ---------------------------- PRUEBA DE UNA SUMA CON ERROR DE TIPO ----------------------------
-from Instrucciones.TablaSimbolos.Tipo import Tipo_Dato, Tipo
-from Instrucciones.Expresiones import Primitivo, Aritmetica
-
-p1 = Primitivo.Primitivo(1,Tipo(Tipo_Dato.BOOLEAN),1,1)
-p2 = Primitivo.Primitivo(2,Tipo(Tipo_Dato.INTEGER),1,1)
-a = Arbol([])
-suma = Aritmetica.Aritmetica(p1,p2,'+',1,2)
-suma.ejecutar(None,a)
-reportes.RealizarReportes.RealizarReportes.generar_reporte_lexicos(a.excepciones)
-'''
 
 class interfaz():
     def __init__(self):
@@ -118,7 +93,6 @@ class interfaz():
 
         self.window.mainloop()
 
-
     def ejecutar(self):
         print("Hello World!")
         print("Estoy ejecutando el main")
@@ -129,8 +103,7 @@ class interfaz():
         #print(input)
         #parser.parse(input)
         #Inserta "Archivo Analizado" en txtsalida
-        
-        
+
     ##############################################EVENTO REDIMENSIONAR LA VENTANA####################################
     def resizeEvent(self, event):
         print(event.width,event.height)
@@ -157,7 +130,7 @@ class interfaz():
             messagebox.showerror('Guardar','No abrio ningun Archivo.')
         except:
             messagebox.showerror("Error","Contacte al Administrador del sistema.")
-        
+
     def guardar_como_click(self):
         self.file = filedialog.askdirectory(initialdir= path.dirname(__file__))
         archivo=open(self.file+"/"+self.tab.tab(self.tab.select(),"text"),"w")
@@ -179,7 +152,7 @@ class interfaz():
 
     def ast_click(self):
         print("ast")   
-    
+
     def repDin_click(self):
         global arbol
         reportes.RealizarGramatica.RealizarGramatica.generar_reporte_gamatical(arbol.lRepDin)
@@ -211,12 +184,6 @@ class interfaz():
         arbol.lRepDin.append("<instrucciones> ::= <instruccion>")
         if arbol is None or arbol.instrucciones is None:
             return
-        
-        #for i in arbol.instrucciones:
-           # if i is None:
-                #break
-            # La variable resultado nos permitirá saber si viene un return, break o continue fuera de sus entornos.
-            #resultado = i.ejecutar(tablaGlobal,arbol)
 
         # Después de haber ejecutado todas las instrucciones se verifica que no hayan errores semánticos.
         if len(arbol.excepciones) != 0:
@@ -230,14 +197,13 @@ class interfaz():
 
         control.c3d_ejecutar += '\nejecutar_3d()'
         print (control.c3d + control.c3d_ejecutar)
+        arbol.consola.append(control.c3d + control.c3d_ejecutar)
 
         # Ciclo que imprimirá todos los mensajes guardados en la variable consola.
         mensaje = ''
         for m in arbol.consola:
             mensaje += m + '\n'
         self.txtsalida[self.tab.index("current")].insert(INSERT,mensaje)
-        
-        
 
     def btnoptimizar_click(self):
         print('Se optimizará el código')
@@ -246,7 +212,31 @@ class interfaz():
         inst = sintactico.optimizar(input)
 
     def btnejecutar_click(self):
-        print("se va ejecutar el archivo")
+        global arbol
+        arbol = None
+        dropAll()
+        os.system ("cls")
+        self.txtsalida[self.tab.index("current")].delete(1.0,END)
+        input=self.txtentrada[self.tab.index("current")].get(1.0,END)
+        tablaGlobal = Tabla(None)
+        inst = sintactico.ejecutar_analisis(input)
+        arbol = Arbol(inst)
+        if len(sintactico.lista_lexicos)>0:
+            messagebox.showerror('Tabla de Errores','La Entrada Contiene Errores!')
+            reportes.RealizarReportes.RealizarReportes.generar_reporte_lexicos(sintactico.lista_lexicos)
+        arbol.lRepDin.append("<init> ::= <instrucciones>")
+        arbol.lRepDin.append("<instrucciones>   ::=  <instrucciones> <instruccion>")
+        arbol.lRepDin.append("<instrucciones> ::= <instruccion>")
+        if arbol is None or arbol.instrucciones is None:
+            return
+        for i in arbol.instrucciones:
+            if i is None:
+                break
+            resultado = i.ejecutar(tablaGlobal,arbol)
+        mensaje = ''
+        for m in arbol.consola:
+            mensaje += m + '\n'
+        self.txtsalida[self.tab.index("current")].insert(INSERT,mensaje)
         
     ##############################################CREA PESTAÑAS EN EL TAB####################################
     def crear_tab(self,entrada,nombre):

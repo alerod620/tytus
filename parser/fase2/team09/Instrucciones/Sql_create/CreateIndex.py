@@ -80,12 +80,15 @@ class CreateIndex(Instruccion):
                             self.constraint.append(Cons(restricciones, "campo(s)"))
                         else:
                             self.constraint.append(Cons(restricciones, "<br>campos(s)"))
+                        print(t.lista_de_campos)
+                        print(self)
                         t.lista_de_campos.append(self)
+                        print(t.lista_de_campos)
                         arbol.consola.append("\nSe ha creado el índice «" + self.nombre + "» correctamente.")
                         return
 
     def traducir(self, tabla, controlador, arbol):
-        codigo = 'CreateIndex.CreateIndex('
+        codigo = '\t#CREATE INDEX\n\tCreateIndex.CreateIndex('
         codigo += self.unique.traducir(tabla, controlador, arbol) + ', "'
         codigo += self.nombre + '", "' + self.tabla + '", '
         codigo += self.using.traducir(tabla, controlador, arbol) + ', ['
@@ -97,9 +100,9 @@ class CreateIndex(Instruccion):
             else:
                 codigo += ', '
         codigo += self.condicion.traducir(tabla, controlador, arbol) + ', "'
-        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
-        #print(codigo)
-        return None
+        codigo += self.strGram + '", ' + str(self.linea) + ', '
+        codigo += str(self.columna) + ').ejecutar(tabla, arbol)\n'
+        controlador.append_3d_ejecutar(codigo)
 
 class Cons():
     def __init__(self, id, rindex):

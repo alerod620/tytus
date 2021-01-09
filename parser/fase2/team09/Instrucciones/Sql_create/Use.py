@@ -31,7 +31,7 @@ class Use(Instruccion):
         #print(self.valor + " linea: " + str(self.linea) + " columna: " + str(self.columna))
 
     def traducir(self, tabla, controlador, arbol):
-        codigo = 'Use.Use("' + self.valor + '", "'
-        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
-        #print(codigo)
-        return None
+        codigo  = '\t#USE\n\tUse.Use("' + self.valor + '", "' + self.strGram + '", '
+        codigo += str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, '
+        codigo += 'arbol)\n'
+        controlador.append_3d_ejecutar(codigo)

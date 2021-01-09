@@ -40,5 +40,5 @@ class Campo(Instruccion):
         codigo = 'Campo.Campo("' + self.nombre + '", ' + str(self.lower) + ', '
         codigo += self.orden.traducir(tabla, controlador, arbol) + ', '
         codigo += self.null.traducir(tabla, controlador, arbol) + ', "'
-        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ')'
-        return codigo
+        codigo += self.strGram + '", ' + str(self.linea) + ', '
+        return codigo + str(self.columna) + ')'

@@ -88,7 +88,8 @@ class AlterIndex(Instruccion):
                 return
 
     def traducir(self, tabla, controlador, arbol):
-        codigo = 'AlterIndex.AlterIndex(' + str(self.existe) + ', "' + self.nombre + '", "' + self.vcolum + '", "' + self.ncolum + '", "'
-        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
-        #print(codigo)
-        return None
+        codigo  = '\t#ALTER INDEX\n\tAlterIndex.AlterIndex(' + str(self.existe) + ', "'
+        codigo += self.nombre + '", "' + self.vcolum + '", "' + self.ncolum + '", "'
+        codigo += self.strGram.replace("\n", "\\n") + '", ' + str(self.linea) + ', '
+        codigo += str(self.columna) + ').ejecutar(tabla, arbol)\n'
+        controlador.append_3d_ejecutar(codigo)

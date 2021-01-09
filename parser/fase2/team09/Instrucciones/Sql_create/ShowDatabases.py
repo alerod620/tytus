@@ -37,11 +37,11 @@ class ShowDatabases(Instruccion):
         #print(self.valor + " linea: " + str(self.linea) + " columna: " + str(self.columna))
 
     def traducir(self, tabla, controlador, arbol):
-        codigo = 'ShowDatabases.ShowDatabases('
+        codigo = '\t#SHOW DATABASES\n\tShowDatabases.ShowDatabases('
         if self.valor is None:
             codigo += 'None, None, "'
         else:
             codigo += '"' + self.valor + '", None, "'
-        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
-        #print(codigo)
-        return None
+        codigo += self.strGram + '", ' + str(self.linea) + ', '
+        codigo += str(self.columna) + ').ejecutar(tabla, arbol)\n'
+        controlador.append_3d_ejecutar(codigo)

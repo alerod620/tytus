@@ -29,10 +29,11 @@ class CreateType(Instruccion):
         arbol.consola.append("Consulta devuelta correctamente.")
 
     def traducir(self, tabla, controlador, arbol):
-        codigo = 'CreateType.CreateType("' + self.valor + '", None, ['
+        codigo  = '\t#CREATE TYPE\n\tCreateType.CreateType("' + self.valor + '", '
+        codigo += 'None, ['
         for e in self.listaExpre:
-            codigo += e.traducir(tabla, controlador, arbol) + ', '
+            codigo += '"' + e.get_temp() + '", '
         codigo = codigo[0:-2] + '], "'
-        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
-        #print(codigo)
-        return None
+        codigo += self.strGram + '", ' + str(self.linea) + ', '
+        codigo += str(self.columna) + ').ejecutar(tabla, arbol)\n'
+        controlador.append_3d_ejecutar(codigo)

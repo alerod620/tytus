@@ -79,3 +79,4 @@ class Tipo_Constraint():
             codigo = codigo[0:-2] + '])'
         else:
             codigo += self.expresion.traducir(tabla, controlador, arbol) + ')'
+        return codigo

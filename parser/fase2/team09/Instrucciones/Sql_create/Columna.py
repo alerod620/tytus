@@ -14,8 +14,11 @@ class Columna(Instruccion):
         codigo = 'CColumna.Columna("' + self.nombre + '", '
         codigo += self.tipo.traducir(tabla, controlador, arbol) + ', '
         if self.constraint is None:
-            codigo += 'None, '
+            codigo += 'None, "'
         else:
-            codigo += self.constraint.traducir(tabla, controlador, arbol) + ', "'
-        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
-        return codigo
+            codigo += '['
+            for c in self.constraint:
+                codigo += c.traducir(tabla, controlador, arbol) + ', '
+            codigo = codigo[0:-2] + '], "'
+        codigo += self.strGram + '", ' + str(self.linea) + ', '
+        return codigo + str(self.columna) + ')'

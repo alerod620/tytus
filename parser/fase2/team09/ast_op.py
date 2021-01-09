@@ -4,8 +4,8 @@ import salto_incodicional as si
 import salto_condicional as sc
 import salto as s
 import reglas as r
-import asignacion as asig
-import acceso_hs as acceso
+#import asignacion as asig
+#import acceso_hs as acceso
 
 auxiliar = 0
 cambio_aux = False

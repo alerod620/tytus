@@ -766,7 +766,6 @@ def p_segment1(t):
     strGram = "<segment> ::= ID <op_constant> <tipo> <op_nulo> <op_asig> PUNTO_COMA"
     t[0] = Variable.Variable(t[1], t[2], t[3], t[4], t[5], None, strGram, t.lexer.lineno, t.lexer.lexpos)
 
-
 def p_segment2(t):
     '''segment : ID ALIAS FOR R_PAR PUNTO_COMA
     '''
@@ -880,7 +879,7 @@ def p_statement4(t):
 def p_statement5(t):
     '''statement_p : st_if END IF PUNTO_COMA
     '''
-    strGram = "<statement> ::= st_if END IF PUNTO_COMA"
+    strGram = "<statement> ::= <st_if> END IF PUNTO_COMA"
     t[0] = t[1]
 
 def p_st_if1(t):
@@ -940,7 +939,6 @@ def p_st_if2_4(t):
     '''
     strGram = "<st_sino> ::= ELSE <statements>"
     t[0] = sentencia_sino.sentencia_sino(None,t[2])
-#----termina statmen de los if
 
 def p_statement6(t):
     '''statement : CASE ID st_case
@@ -1993,14 +1991,14 @@ def p_campos_tablas(t):
     '''
     #ESTOY HACIENDO ESTA
     strGram = "<campos> ::= <campos> COMA ID <tipo> <lista_op>"
-    t[1].append(CColumna.Columna(t[3], t[4], t[5], strGram, t.lineno, t.lexpos))
+    t[1].append(CColumna.Columna(t[3], t[4], t[5], strGram, t.lexer.lineno, t.lexer.lexpos))
     t[0] =t[1]
 
 def p_campos_tablas1(t):
     '''campos : campos COMA ID tipo
     '''
     strGram = "<campos> ::= <campos> COMA ID tipo"
-    t[1].append(CColumna.Columna(t[3], t[4], None, strGram, t.lineno, t.lexpos))
+    t[1].append(CColumna.Columna(t[3], t[4], None, strGram, t.lexer.lineno, t.lexer.lexpos))
     t[0] =t[1]
 
 def p_campos_tablas4(t):
@@ -2027,13 +2025,13 @@ def p_campos_tablas7(t):
     '''campos : ID tipo lista_op
     '''
     strGram = "<campos> ::= ID <tipo> <lista_op>"
-    t[0] = [CColumna.Columna(t[1], t[2], t[3], strGram, t.lineno, t.lexpos)]
+    t[0] = [CColumna.Columna(t[1], t[2], t[3], strGram, t.lexer.lineno, t.lexer.lexpos)]
 
 def p_campos_tablas8(t):
     '''campos : ID tipo
     '''
     strGram = "<campos> ::= ID <tipo>"
-    t[0] = [CColumna.Columna(t[1], t[2], None, strGram, t.lineno, t.lexpos)]
+    t[0] = [CColumna.Columna(t[1], t[2], None, strGram, t.lexer.lineno, t.lexer.lexpos)]
 
 def p_lista_id1(t):
     '''lista_id : lista_id COMA ID

@@ -183,7 +183,8 @@ class CreateTable(Instruccion):
             arbol.consola.append(error.toString())
 
     def traducir(self, tabla, controlador, arbol):
-        codigo = 'CreateTable.CreateTable("' + self.tabla + '", None, [' 
+        codigo  = '\t#CREATE TABLE\n\tCreateTable.CreateTable("' + self.tabla
+        codigo += '", None, [' 
         for c in self.campos:
             codigo += c.traducir(tabla, controlador, arbol) + ', '
         codigo = codigo[0:-2] + '], '
@@ -194,9 +195,9 @@ class CreateTable(Instruccion):
             for c in self.herencia:
                 codigo += c.traducir(tabla, controlador, arbol) + ', '
             codigo = codigo[0:-2] + '], "'
-        codigo += self.strGram + '", ' + str(self.linea) + ', ' + str(self.columna) + ').ejecutar(tabla, arbol)\n'
-        #print(codigo)
-        return None
+        codigo += self.strGram + '", ' + str(self.linea) + ', '
+        codigo += str(self.columna) + ').ejecutar(tabla, arbol)\n'
+        controlador.append_3d_ejecutar(codigo)
 
 class IdentificadorColumna(Instruccion):
     def __init__(self, id, linea, columna):
