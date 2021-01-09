@@ -15,10 +15,10 @@ from Instrucciones.TablaSimbolos.Tabla import Tabla
 
 class Funcion(Instruccion):
     def __init__(self, id, tipo, campos, ids, linea, columna):
-        Instruccion.__init__(self,tipo,linea,columna, strGram)
+#        Instruccion.__init__(self,tipo,linea,columna, strGram)
         self.valor = id
-        self.campos = campos
-        self.ids = ids
+        self.campos = campos #parametros
+        self.ids = ids      # declaraciones
 
     def ejecutar(self, tabla, arbol):
         super().ejecutar(tabla,arbol)

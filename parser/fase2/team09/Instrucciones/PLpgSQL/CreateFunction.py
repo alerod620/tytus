@@ -2,6 +2,7 @@ from Instrucciones.TablaSimbolos.Instruccion import Instruccion
 from Instrucciones.Excepcion import Excepcion
 from Instrucciones.TablaSimbolos.Tipo import Tipo_Dato, Tipo
 from Instrucciones.TablaSimbolos.Simbolo import Simbolo
+from Instrucciones.TablaSimbolos.Funcion import Funcion
 from Instrucciones.TablaSimbolos.Tabla import Tabla
 from Instrucciones.C3D.temporal import temporal
 from Instrucciones.PLpgSQL.sentencia_return import sentencia_return
@@ -13,6 +14,9 @@ class CreateFunction(Instruccion):
         self.parametros = parametros
         self.declaraciones = declaraciones
         self.instrucciones = instrucciones
+        self.tipo = tipo
+        self.linea = linea
+        self.columna = columna 
 
     def ejecutar(self, tabla, arbol):
         #super().ejecutar(tabla,arbol)
@@ -35,16 +39,19 @@ class CreateFunction(Instruccion):
             codigo += '\n@with_goto \ndef '+str(self.nombre)+'(): \n'
             controlador.append_3d(codigo)
             codigo = ''
-            controlador.set_stack(1)
+            controlador.set_stack(0)
             peso_funcion = len(self.parametros) + len(self.declaraciones)
 
-            for ins in self.instrucciones:
-                if (isinstance(ins,sentencia_return)):
-                    peso_funcion = peso_funcion + 1
+            #se suma 1 por el return
+            peso_funcion = peso_funcion + 1
             
+            aux_peso = controlador.peso_fun_actual
+            controlador.peso_fun_actual = peso_funcion
+
             #guardando en la ts los parametros 
             for parametro in self.parametros:
                 nuevo_simbolo = Simbolo(parametro.nombre,parametro.tipo,controlador.get_stack(),parametro.linea, parametro.columna)
+                print('pos_stack -> ' + str(nuevo_simbolo))
                 tabla_local.setVariable(nuevo_simbolo)
             
             #generar el codigo de las declaraciones 
@@ -58,6 +65,9 @@ class CreateFunction(Instruccion):
             
             controlador.append_3d(codigo)
             controlador.etiqueta_salida = aux
+            controlador.peso_fun_actual = aux_peso
+            funcion = Funcion(self.nombre,self.tipo,self.parametros,self.declaraciones,self.linea, self.columna)
+            tabla.setFuncion(funcion)
 
         else:
             error = Excepcion('40514',"Semántico","La funcion "+str(self.nombre)+" No existe",self.linea,self.columna)

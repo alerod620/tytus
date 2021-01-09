@@ -607,6 +607,7 @@ def p_columunas_delete(t):
     strGram = "<instruccion> ::= DELETE FROM ID <instructionWhere> PUNTO_COMA"
     t[0] = DeleteTable.DeleteTable(t[3], None, t[4], strGram, t.lexer.lineno, t.lexer.lexpos)
 
+
 # update tabla set campo = valor , campo 2= valor where condicion
 def p_instruccion_update(t):
     '''instruccion : UPDATE ID SET lcol instructionWhere PUNTO_COMA
@@ -654,6 +655,8 @@ def p_list_exp1(t):
     '''list_exp : list_exp COMA expresion
     '''
     strGram = "<list_exp> ::= <list_exp> COMA <expresion>"
+    t[1].append(t[3])
+    t[0] = t[1]
 
 def p_list_exp2(t):
     '''list_exp : expresion
@@ -869,7 +872,7 @@ def p_statement4(t):
     '''statement : RETURN expre PUNTO_COMA
     '''
     strGram = "<statement> ::= RETURN <expre> PUNTO_COMA"
-    retorno = sentencia_return(t[1])
+    retorno = sentencia_return(t[2])
     t[0] = retorno
 
 def p_statement5(t):
@@ -900,7 +903,7 @@ def p_st_if4(t):
     '''st_if : st_si st_sino
     '''
     strGram = "<st_if> ::= <st_si> <st_sino>"
-    t[0] = sentencia_if.sentencia_if(t[1],None,t[3])
+    t[0] = sentencia_if.sentencia_if(t[1],None,t[2])
 
 def p_st_if1_1(t):
     '''st_si : IF expre THEN statements 

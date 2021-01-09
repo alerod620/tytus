@@ -191,9 +191,10 @@ class interfaz():
 
         #Traduccion a codigo 3D
         control = controlador()
-        
+        print(str(arbol.instrucciones))
         for i in arbol.instrucciones:
-            resultado2 = i.traducir(tablaGlobal,control, arbol)
+            if i != None:
+                resultado2 = i.traducir(tablaGlobal,control, arbol)
 
         control.c3d_ejecutar += '\nejecutar_3d()'
         print (control.c3d + control.c3d_ejecutar)

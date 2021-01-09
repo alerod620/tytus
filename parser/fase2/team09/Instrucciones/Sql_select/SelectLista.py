@@ -58,7 +58,7 @@ class SelectLista(Instruccion):
                 n.data = valores
                 return n
 
-
+    
 class Alias():
     def __init__(self, id, expresion):
         self.id = id

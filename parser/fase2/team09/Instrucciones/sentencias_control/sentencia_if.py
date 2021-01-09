@@ -9,7 +9,7 @@ class sentencia_if():
 
     def traducir(self, tabla, controlador, arbol):
         codigo = ''
-        print('entro al traducir de la sentencia if')
+       # print('entro al traducir de la sentencia if')
         
         #guardo todo en una lista 
         self.lista_if.append(self.si)
@@ -26,7 +26,7 @@ class sentencia_if():
 
         #Voy a la clase sino a generar el codigo
         for i in self.lista_if:
-            print(str(i))
+           # print(str(i))
             i.cond1_ls = cond1_ls  #se asigna la etiqueta de salida
             i.traducir(tabla, controlador, arbol)
         

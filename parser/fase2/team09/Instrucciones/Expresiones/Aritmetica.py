@@ -323,6 +323,8 @@ class Aritmetica(Instruccion):
             if isinstance(resultadoDer, Excepcion):
                 return resultadoDer
 
+            #print('***********ope izq -> '+str(self.opIzq.tipo.tipo))
+            #print('***********ope der -> '+str(self.opDer.tipo.tipo))
             temp_izq = resultadoIzq.get_temp()
             temp_der = resultadoDer.get_temp()
 
@@ -392,7 +394,7 @@ class Aritmetica(Instruccion):
                     controlador.append_3d(codigo)
                     return temp_resultado               
                 else:
-                    error = Excepcion('42883',"Semántico","el operador no existe: "+self.opIzq.tipo.toString()+" + "+self.opDer.tipo.toString(),self.linea,self.columna)
+                    error = Excepcion('42883',"Semántico","el operador no existe: "+str(self.opIzq.tipo.toString())+" + "+str(self.opDer.tipo.toString()),self.linea,self.columna)
                     arbol.excepciones.append(error)
                     arbol.consola.append(error.toString())
                     return error

@@ -232,9 +232,11 @@ class ast_op():
             aritmetica.Aritmetica(entrada[1], entrada[2], entrada[3]).optimizacion()
 
         elif entrada[0] == 'asig':
+            print('')
             #Asignacion
-            asig.Asignacion(entrada[1]).optimizacion()
+            #asig.Asignacion(entrada[1]).optimizacion()
 
         elif entrada[0] == 'acceso':
+            print('')
             #Acceso de heap y stack
-            acceso.Acceso(entrada[1], entrada[2], entrada[3]).optimizacion()
+           # acceso.Acceso(entrada[1], entrada[2], entrada[3]).optimizacion()

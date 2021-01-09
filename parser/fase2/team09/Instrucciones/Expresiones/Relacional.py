@@ -783,10 +783,12 @@ class Relacional(Instruccion):
          codigo = ''
         # Si existe algún error en el operador izquierdo, retorno el error.
          resultadoIzq = self.opIzq.traducir(tabla, controlador, arbol)
+         self.opIzq = resultadoIzq
          if isinstance(resultadoIzq, Excepcion):
             return resultadoIzq
         # Si existe algún error en el operador derecho, retorno el error.
          resultadoDer = self.opDer.traducir(tabla, controlador, arbol)
+         self.opIzq = resultadoIzq
          if isinstance(resultadoDer, Excepcion):
             return resultadoDer
                 
@@ -817,7 +819,11 @@ class Relacional(Instruccion):
             and (self.opDer.tipo.tipo == Tipo_Dato.INTEGER or self.opDer.tipo.tipo == Tipo_Dato.NUMERIC or self.opDer.tipo.tipo == Tipo_Dato.DOUBLE_PRECISION))
             or (self.opIzq.tipo.tipo == Tipo_Dato.BOOLEAN and self.opDer.tipo.tipo == Tipo_Dato.BOOLEAN) 
             or ((self.opIzq.tipo.tipo == Tipo_Dato.VARCHAR or self.opIzq.tipo.tipo == Tipo_Dato.TEXT or self.opIzq.tipo.tipo == Tipo_Dato.CHAR)
-            and (self.opDer.tipo.tipo == Tipo_Dato.VARCHAR or self.opDer.tipo.tipo == Tipo_Dato.TEXT or self.opDer.tipo.tipo == Tipo_Dato.CHAR))):
+            and (self.opDer.tipo.tipo == Tipo_Dato.VARCHAR or self.opDer.tipo.tipo == Tipo_Dato.TEXT or self.opDer.tipo.tipo == Tipo_Dato.CHAR))
+            or (self.opDer.tipo.tipo == Tipo_Dato.ID or self.opDer.tipo.tipo == Tipo_Dato.ID)):
+
+            if(str(self.operador) =='='):
+                self.operador ='=='
 
             codigo += '    #operacion relacional-- \n'
             codigo += '    if('+str(temp_izq_c3d)+' '+str(self.operador)+' '+str(temp_der_c3d)+'): \n'
@@ -831,8 +837,8 @@ class Relacional(Instruccion):
             controlador.append_3d(codigo)
             return temp_resultado
          else:
-            print(str(self.opIzq.tipo.tipo))
-            print(str(self.opDer.tipo.tipo))
+            print('-----------> tipos en relacional izq'+str(self.opIzq.tipo.tipo))
+            print('-----------> tipos en relacional der'+str(self.opDer.tipo.tipo))
             error = Excepcion('42883',"Semántico","el operador no existe: "+self.opIzq.tipo.toString()+ self.operador+self.opDer.tipo.toString(),self.linea,self.columna)
             return error
 

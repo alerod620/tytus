@@ -99,12 +99,16 @@ class Identificador(Instruccion):
             arbol.consola.append(error.toString())
             return error 
         else:
+           # print('entro a esta madre ' + str(variable.tipo.tipo))
             controlador.cont_temp = controlador.cont_temp + 1
             temp1 = temporal(controlador.cont_temp,None)
 
             controlador.cont_temp = controlador.cont_temp + 1
             temp2 = temporal(controlador.cont_temp,None)
-            temp2.tipo = Tipo(variable.tipo)
+            if(isinstance(variable.tipo,Tipo)):
+                temp2.tipo = variable.tipo
+            else:
+                temp2.tipo = Tipo(variable.tipo)
 
             codigo += '    #obtener valor id \n'
             codigo += '    '+str(temp1.get_temp()) + ' = P + '+str(variable.valor) +'\n'

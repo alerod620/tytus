@@ -17,6 +17,8 @@ class controlador():
         self.c3d += 'arbol = Arbol(None)\n'
         self.c3d += '\n#declaracion de heap y stack \nheap = [10000] \nstack = [10000] \nP = 0 \nH = 0 \n'
         
+        self.c3d += '#inicialisacion de heap y stack \nfor i in range(1000): \n    stack.append(i) \n    heap.append(i)'
+
         self.cont_temp = 0
         self.etiquetas = 0
         self.heap = 0
@@ -24,6 +26,8 @@ class controlador():
         self.errores = []
         self.etiqueta_salida = ''
         self.c3d_ejecutar = '\n#### ejecucion de codigo 3d #### \n@with_goto\ndef ejecutar_3d():\n'
+        self.c3d_ejecutar += '    global P \n    global H \n    global heap \n    global stack\n'
+        self.peso_fun_actual = 0
 
     def append_3d(self, codigo):
         self.c3d += codigo +'\n'

@@ -27,10 +27,21 @@ class Asignacion(Instruccion):
             arbol.consola.append(error.toString())
             return error 
         else:
-
             exp = self.expresion.traducir(tabla, controlador, arbol)
-           
-            if(variable.tipo == exp.tipo.tipo):
+            
+            #validacion de tipos
+            if(isinstance(variable.tipo,Tipo)):
+                variable.tipo = variable.tipo
+            else:
+                variable.tipo = Tipo(variable.tipo)
+            
+            if(isinstance(exp.tipo,Tipo)):
+                exp.tipo = exp.tipo
+            else:
+                exp.tipo = Tipo(exp.tipo)
+            #vaidacion de tipos
+
+            if(variable.tipo.tipo == exp.tipo.tipo):
                 controlador.cont_temp = controlador.cont_temp + 1
                 temp = temporal(controlador.cont_temp,None)
 
