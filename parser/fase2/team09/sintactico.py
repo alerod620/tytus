@@ -607,7 +607,6 @@ def p_columunas_delete(t):
     strGram = "<instruccion> ::= DELETE FROM ID <instructionWhere> PUNTO_COMA"
     t[0] = DeleteTable.DeleteTable(t[3], None, t[4], strGram, t.lexer.lineno, t.lexer.lexpos)
 
-
 # update tabla set campo = valor , campo 2= valor where condicion
 def p_instruccion_update(t):
     '''instruccion : UPDATE ID SET lcol instructionWhere PUNTO_COMA
@@ -1263,8 +1262,7 @@ def p_instruccion_insert2(t):
 # SELECT col, col FROM id;
 # SELECT * from id;
 def p_instruccion_query(t):
-    '''
-    instruccion : lquery PUNTO_COMA
+    ''' instruccion : lquery PUNTO_COMA
     '''
     t[0]=t[1]
 
@@ -1275,8 +1273,7 @@ def p_lista_querys(t):
     t[0] = Relaciones.Relaciones(t[1],t[2],t[3],strGram,t.lexer.lineno, t.lexer.lexpos)
 
 def p_lista_querys2(t):
-    '''
-    lquery : query
+    ''' lquery : query
     '''
     t[0] = t[1]
 
@@ -1302,8 +1299,7 @@ def p_tipo_relaciones2(t):
         t[0] = None
 
 def p_instruccion_select(t):
-    '''
-    query : SELECT dist lcol FROM lcol
+    ''' query : SELECT dist lcol FROM lcol
     '''
     strGram = "<query> ::= SELECT <dist> <lcol> FROM <lcol>"
     strGram2 = ""
@@ -1312,8 +1308,7 @@ def p_instruccion_select(t):
     t[0] = SelectLista.SelectLista(val, strGram2, t.lexer.lineno, t.lexer.lexpos)
 
 def p_instruccion_select1(t):
-    '''
-    query : SELECT dist lcol FROM lcol instructionWhere lrows
+    '''query : SELECT dist lcol FROM lcol instructionWhere lrows
     '''
     #            dist  tipo  lcol  lcol  linners where lrows
     strGram = "<query> ::= SELECT <dist> <lcol> FROM <lcol> <instructionWhere> <lrows>"
@@ -1396,8 +1391,7 @@ def p_lista_case2(t):
     t[0] = t[1]
 
 def p_instruccion_case(t):
-    '''
-    case    : WHEN expre THEN expre
+    '''case : WHEN expre THEN expre
             | ELSE expre
     '''
 
@@ -1912,7 +1906,7 @@ def p_operadores_otros(t):
         t[0] = Extract.Extract(t[3], t[6], strGram, t.lexer.lineno, t.lexer.lexpos)
     elif t[1] == 'NOW':
         strGram = "<expre> ::= NOW PARIZQ PARDER"
-        t[0] = Now.Now( strGram, t.lexer.lineno, t.lexer.lexpos)
+        t[0] = Now.Now(strGram, t.lexer.lineno, t.lexer.lexpos)
     elif t[1] == 'DATE_PART':
         strGram = "<expre> ::= DATE_PART PARIZQ CARACTER COMA INTERVAL CARACTER PARDER"
         t[0] = DatePart.DatePart(t[3], t[6], strGram, t.lexer.lineno, t.lexer.lexpos)
@@ -1944,34 +1938,14 @@ def p_operadores_logicos5(t):
     t[0] = t[1]
 
 def p_tiempo1(t):
-    ''' tiempo :  YEAR
+    ''' tiempo : YEAR
+               | MONTH
+               | DAY
+               | HOUR
+               | MINUTE
+               | SECOND
     '''
-    t[0] = "YEAR"
-
-def p_tiempo2(t):
-    ''' tiempo :  MONTH
-    '''
-    t[0] = "MONTH"
-
-def p_tiempo3(t):
-    ''' tiempo :  DAY
-    '''
-    t[0] = "DAY"
-
-def p_tiempo4(t):
-    ''' tiempo :  HOUR
-    '''
-    t[0] = "HOUR"
-
-def p_tiempo5(t):
-    ''' tiempo :  MINUTE
-    '''
-    t[0] = "MINUTE"
-
-def p_tiempo6(t):
-    ''' tiempo :  SECOND
-    '''
-    t[0] = "SECOND"
+    t[0] = t[1]
 
 def p_campos_tablas(t):
     '''campos : campos COMA ID tipo lista_op

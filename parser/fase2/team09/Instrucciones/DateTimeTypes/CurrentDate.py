@@ -13,8 +13,7 @@ class CurrentDate(Instruccion):
         date = todays_date.strftime("%Y-%m-%d")
         return date
 
-'''
-instruccion = Declare("hola mundo",None, 1,2)
-
-instruccion.ejecutar(None,None)
-'''
+    def getCode(self):
+        codigo  = 'CurrentDate.CurrentDate("' + self.strGram.replace("\n", "\\n")
+        codigo += '", ' + str(self.linea) + ', ' + str(self.columna) + ')'
+        return codigo

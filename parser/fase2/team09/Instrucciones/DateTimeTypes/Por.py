@@ -15,8 +15,8 @@ class Por(Instruccion):
         ts.setVariable(exp)
         print("imprimir_declaracion")
 
-'''
-instruccion = Declare("hola mundo",None, 1,2)
-
-instruccion.ejecutar(None,None)
-'''
+    def getCode(self):
+        codigo  = 'Por.Por("' + self.identificador + '", "' + self.valor + '", "'
+        codigo += self.operacion + '", "' + self.strGram.replace("\n", "\\n") + '", '
+        codigo += str(self.linea) + ', ' + str(self.columna) + ')'
+        return codigo

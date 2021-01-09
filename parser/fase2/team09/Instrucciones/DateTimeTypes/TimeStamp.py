@@ -5,19 +5,16 @@ from datetime import datetime
 class TimeStamp(Instruccion):
     def __init__(self, id, strGram,linea, columna):
         Instruccion.__init__(self,None,linea,columna,strGram)
-        self.identificador = id
+        self.id = id
 
     def ejecutar(self, ts, arbol):
         super().ejecutar(ts,arbol)
-        #el id es para guardarlo en la tabla
-        #exp = Simbolo(self.identificador,self.operacion,self.valor,self.linea,self.columna)
-        #ts.setVariable(exp)
         todays = datetime.today()
         today = todays.strftime("%Y-%m-%d %H:%M:%S")
         return today
 
-'''
-instruccion = Declare("hola mundo",None, 1,2)
-
-instruccion.ejecutar(None,None)
-'''
+    def getCode(self):
+        codigo  = 'TimeStamp.TimeStamp("' + self.id + '", "'
+        codigo += self.strGram.replace("\n", "\\n") + '", '
+        codigo += str(self.linea) + ', ' + str(self.columna) + ')'
+        return codigo

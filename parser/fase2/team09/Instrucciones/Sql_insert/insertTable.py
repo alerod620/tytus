@@ -366,3 +366,19 @@ class insertTable(Instruccion):
         elif (tipoColumna.tipo == Tipo_Dato.BOOLEAN) and (tipoValor.tipo == Tipo_Dato.BOOLEAN):
             return True
         return False
+
+    def traducir(self, tabla, controlador, arbol):
+        codigo  = '\t#INSERT\n\tinsertTable.insertTable("' + self.valor + '", None, '
+        if self.lcol is None:
+            codigo += 'None, ['
+        else:
+            codigo += '['
+            for c in self.lcol:
+                codigo += c.getCode() + ', '
+            codigo = codigo[0:-2] + '], ['
+        for e in self.lexpre:
+            codigo += e.getCode() + ', '
+        codigo  = codigo[0:-2] + '], "' + self.strGram.replace("\n", "\\n") + '", '
+        codigo += str(self.linea) + ', ' + str(self.columna)
+        codigo += ').ejecutar(tabla, arbol)\n'
+        controlador.append_3d_ejecutar(codigo)

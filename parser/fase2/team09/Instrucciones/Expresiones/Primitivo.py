@@ -20,14 +20,14 @@ class Primitivo(Instruccion):
 
     def getCode(self):
         codigo  = 'Primitivo.Primitivo('
-        try:
-            v = bool(self.valor)
-            if v:
-                codigo += 'True, '
-            else:
-                codigo += 'False, '
-        except:
-            codigo += '"' + self.valor + '", '
+        if str(self.valor) == 'True' or str(self.valor) == 'False':
+            codigo += self.valor + ', '
+        else:
+            try:
+                int(self.valor)
+                codigo += str(self.valor) + ', '
+            except:
+                codigo += '"' + self.valor + '", '
         codigo += self.tipo.getCode() + ', "' + self.strGram.replace('\n', '\\n')
         codigo += '", ' + str(self.linea) + ', ' + str(self.columna) + ')'
         return codigo

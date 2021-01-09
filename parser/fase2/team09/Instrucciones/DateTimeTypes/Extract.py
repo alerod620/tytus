@@ -33,8 +33,8 @@ class Extract(Instruccion):
             year = date.year
             return year
 
-'''
-instruccion = Declare("hola mundo",None, 1,2)
-
-instruccion.ejecutar(None,None)
-'''
+    def getCode(self, tabla, controlador, arbol):
+        codigo  = 'Extract.Extract("' + self.tiempo + '", "' + self.caracter
+        codgio += '", "' + self.strGram.replace("\n", "\\n") + '", '
+        codigo += str(self.linea) + ', ' + str(self.columna) + ')'
+        return codigo

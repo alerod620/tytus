@@ -13,8 +13,7 @@ class CurrentTime(Instruccion):
         time = todays_date.strftime("%H:%M:%S")
         return time
 
-'''
-instruccion = Declare("hola mundo",None, 1,2)
-
-instruccion.ejecutar(None,None)
-'''
+    def getCode(self):
+        codigo  = 'CurrentTime.CurrentTime("' + self.strGram.replace("\n", "\\n")
+        codigo += '", ' + str(self.linea) + ', ' + str(self.columna) + ')'
+        return codigo

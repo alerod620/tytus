@@ -40,9 +40,9 @@ class DatePart(Instruccion):
             #print("hora")
             #print(str(hora))
             return hora
-        
-'''
-instruccion = Declare("hola mundo",None, 1,2)
 
-instruccion.ejecutar(None,None)
-'''
+    def getCode(self):
+        codigo  = 'DatePart.DatePart("' + self.identificador + '", "' + self.valor
+        codigo += '", "' + self.strGram.replace("\n", "\\n") + '", '
+        codigo += str(self.linea) + ', ' + str(self.columna) + ')'
+        return codigo

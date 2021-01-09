@@ -192,12 +192,12 @@ class interfaz():
         #Traduccion a codigo 3D
         control = controlador()
         print(str(arbol.instrucciones))
+        
         for i in arbol.instrucciones:
             if i != None:
                 resultado2 = i.traducir(tablaGlobal,control, arbol)
 
         control.c3d_ejecutar += '\nejecutar_3d()'
-        print (control.c3d + control.c3d_ejecutar)
         arbol.consola.append(control.c3d + control.c3d_ejecutar)
 
         # Ciclo que imprimirá todos los mensajes guardados en la variable consola.
