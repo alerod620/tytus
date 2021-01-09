@@ -57,9 +57,12 @@ class CreateFunction(Instruccion):
             #generar el codigo de las declaraciones 
             for declaracion in self.declaraciones:
                 declaracion.traducir(tabla_local, controlador, arbol)
+                
             #generando codigo de las sentencias
             for instruccion in self.instrucciones:
+                controlador.bandera = True
                 instruccion.traducir(tabla_local, controlador, arbol)
+                controlador.bandera = False
             
             codigo += '    label. '+ str(etiqueta_salida)
             

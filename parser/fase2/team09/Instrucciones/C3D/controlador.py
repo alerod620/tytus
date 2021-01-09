@@ -46,12 +46,17 @@ class controlador():
         self.c3d_ejecutar = '\n#### ejecucion de codigo 3d #### \n@with_goto\ndef ejecutar_3d():\n'
         self.c3d_ejecutar += '    global P \n    global H \n    global heap \n    global stack\n'
         self.peso_fun_actual = 0
+        self.bandera = False
 
     def append_3d(self, codigo):
         self.c3d += codigo +'\n'
 
     def append_3d_ejecutar(self,codigo):
-        self.c3d_ejecutar += codigo +'\n'
+        print('---'+str(self.bandera))
+        if(self.bandera == True):
+            self.c3d += codigo +'\n'
+        else:
+            self.c3d_ejecutar += codigo +'\n'
 
     def get_etiqueta(self):
         self.etiquetas = self.etiquetas+1
