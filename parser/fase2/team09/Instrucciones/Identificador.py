@@ -7,6 +7,9 @@ from Instrucciones.TablaSimbolos.Simbolo import Simbolo
 from Instrucciones.TablaSimbolos.Tipo import Tipo, Tipo_Dato
 from Instrucciones.Tablas.Campo import Campo
 from storageManager.jsonMode import *
+
+from Instrucciones.C3D.temporal import temporal
+
 import numpy as np
 class Identificador(Instruccion):
     def __init__(self, id, strGram, linea, columna):
@@ -84,3 +87,27 @@ class Identificador(Instruccion):
             return error
         self.tipo = variable.tipo
         return variable.valor.ejecutar(tabla, arbol)
+
+    def traducir(self, tabla, controlador, arbol):
+        codigo = ''
+        #validar que la variable exista 
+        variable = tabla.getVariable(self.id)
+
+        if( variable == None):
+            error = Excepcion('40514',"Semántico","La variable"+ self.id +"No existe",self.linea,self.columna)
+            arbol.excepciones.append(error)
+            arbol.consola.append(error.toString())
+            return error 
+        else:
+            controlador.cont_temp = controlador.cont_temp + 1
+            temp1 = temporal(controlador.cont_temp,None)
+
+            controlador.cont_temp = controlador.cont_temp + 1
+            temp2 = temporal(controlador.cont_temp,None)
+            temp2.tipo = Tipo(variable.tipo)
+
+            codigo += '    #obtener valor id \n'
+            codigo += '    '+str(temp1.get_temp()) + ' = P + '+str(variable.valor) +'\n'
+            codigo += '    '+str(temp2.get_temp())+ ' = stack['+str(temp1.get_temp())+']  \n'
+            controlador.append_3d(codigo)
+            return temp2

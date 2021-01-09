@@ -1,4 +1,5 @@
 from Instrucciones.TablaSimbolos.Instruccion import Instruccion
+from Instrucciones.TablaSimbolos.Tipo import Tipo_Dato, Tipo
 
 class Primitivo(Instruccion):
     def __init__(self, valor, tipo, strGram, linea, columna):
@@ -10,7 +11,9 @@ class Primitivo(Instruccion):
         super().ejecutar(tabla,arbol)
         return self.valor
 
-    def traducir(self, tabla, controlador):
+    def traducir(self, tabla, controlador,arbol):
+        if(self.tipo.tipo == Tipo_Dato.CHAR or self.tipo.tipo == Tipo_Dato.VARCHAR or self.tipo.tipo == Tipo_Dato.TEXT):
+            self.valor = '\''+ str(self.valor) + '\''
         return self
     
     def get_temp(self):

@@ -63,7 +63,7 @@ class interfaz():
         self.window.configure(background="#6a8d92")
         self.window.title("Query Tool - Grupo 9")
         #w, h = self.window.winfo_screenwidth()/2, self.window.winfo_screenheight()/2
-        w, h = 1370,670
+        w, h = 900,670
         self.window.geometry("%dx%d+0+0" % (w, h))
         
         ##############################################MENU####################################
@@ -85,16 +85,16 @@ class interfaz():
 
         ##############################################BOTONES####################################
         
-        img2 = PhotoImage(file='img/icons/AnalyzeMP.png')
-        btnanalizar = Button(self.window , image=img2, bg="#6a8d92",height=35, width=40, command=self.btnanalizar_click)
+        #img2 = PhotoImage(file='img/icons/AnalyzeMP.png')
+        btnanalizar = Button(self.window , bg="#6a8d92",height=35, width=40, command=self.btnanalizar_click)
         btnanalizar.place(x=20,y=4)
 
-        img3 = PhotoImage(file='img/icons/play32.png')
-        btnejecutar = Button(self.window , image=img3, bg="#6a8d92",height=35, width=40,command=self.btnejecutar_click)
+       # img3 = PhotoImage(file='img/icons/play32.png')
+        btnejecutar = Button(self.window , bg="#6a8d92",height=35, width=40,command=self.btnejecutar_click)
         btnejecutar.place(x=115,y=5)
 
-        img4 = PhotoImage(file='img/icons/op.png')
-        btnoptimizar = Button(self.window, image=img4, bg="#6a8d92",height=35, width=40,command=self.btnoptimizar_click)
+       # img4 = PhotoImage(file='img/icons/op.png')
+        btnoptimizar = Button(self.window, bg="#6a8d92",height=35, width=40,command=self.btnoptimizar_click)
         btnoptimizar.place(x=200,y=5)
 
         ##############################################PESTAÑAS####################################
@@ -228,8 +228,8 @@ class interfaz():
         for i in arbol.instrucciones:
             resultado2 = i.traducir(tablaGlobal,control, arbol)
 
-        control.c3d += '\nejecutar_3d()'
-        print (control.c3d)
+        control.c3d_ejecutar += '\nejecutar_3d()'
+        print (control.c3d + control.c3d_ejecutar)
 
         # Ciclo que imprimirá todos los mensajes guardados en la variable consola.
         mensaje = ''

@@ -780,22 +780,59 @@ class Relacional(Instruccion):
             arbol.consola.append(error.toString())
             return error
 
-    def traducir(self, tabla, controlador):
-        codigo = ''
+    def traducir(self, tabla, controlador,arbol):
+         codigo = ''
         # Si existe algún error en el operador izquierdo, retorno el error.
-        resultadoIzq = self.opIzq.traducir(tabla, controlador)
-        if isinstance(resultadoIzq, Excepcion):
+         resultadoIzq = self.opIzq.traducir(tabla, controlador, arbol)
+         if isinstance(resultadoIzq, Excepcion):
             return resultadoIzq
         # Si existe algún error en el operador derecho, retorno el error.
-        resultadoDer = self.opDer.traducir(tabla, controlador)
-        if isinstance(resultadoDer, Excepcion):
+         resultadoDer = self.opDer.traducir(tabla, controlador, arbol)
+         if isinstance(resultadoDer, Excepcion):
             return resultadoDer
                 
-        temp_izq = resultadoIzq.get_temp()
-        temp_der = resultadoDer.get_temp()
+        #etiquetas para el c3d
+         cond_lv = controlador.get_etiqueta()
+         cond_lf = controlador.get_etiqueta()
 
-        controlador.cont_temp = controlador.cont_temp + 1
-        temp_resultado = temporal(controlador.cont_temp,None)
+         temp_izq = resultadoIzq.get_temp()
+         temp_der = resultadoDer.get_temp()
+         temp_izq_c3d = temp_izq
+         temp_der_c3d = temp_der
+         #valores true o false en c3d seran 1 y 0
+         if temp_izq == True:
+            temp_izq_c3d = 1
+         elif temp_izq == False:
+            temp_izq_c3d = 0
 
-        if self.operador == '>': 
-            temp_resultado.tipo = Tipo_Dato.BOOLEAN
+         if temp_der == True:
+            temp_der_c3d = 1
+         elif temp_der == False:
+            temp_der_c3d = 0
+
+         controlador.cont_temp = controlador.cont_temp + 1
+         temp_resultado = temporal(controlador.cont_temp,None)
+
+         #comprobacion de tipos 
+         if(((self.opIzq.tipo.tipo == Tipo_Dato.INTEGER or self.opIzq.tipo.tipo == Tipo_Dato.NUMERIC or self.opIzq.tipo.tipo == Tipo_Dato.DOUBLE_PRECISION) 
+            and (self.opDer.tipo.tipo == Tipo_Dato.INTEGER or self.opDer.tipo.tipo == Tipo_Dato.NUMERIC or self.opDer.tipo.tipo == Tipo_Dato.DOUBLE_PRECISION))
+            or (self.opIzq.tipo.tipo == Tipo_Dato.BOOLEAN and self.opDer.tipo.tipo == Tipo_Dato.BOOLEAN) 
+            or ((self.opIzq.tipo.tipo == Tipo_Dato.VARCHAR or self.opIzq.tipo.tipo == Tipo_Dato.TEXT or self.opIzq.tipo.tipo == Tipo_Dato.CHAR)
+            and (self.opDer.tipo.tipo == Tipo_Dato.VARCHAR or self.opDer.tipo.tipo == Tipo_Dato.TEXT or self.opDer.tipo.tipo == Tipo_Dato.CHAR))):
+
+            codigo += '    #operacion relacional-- \n'
+            codigo += '    if('+str(temp_izq_c3d)+' '+str(self.operador)+' '+str(temp_der_c3d)+'): \n'
+            codigo += '        goto .'+ cond_lv +'\n'
+            codigo += '    '+str(temp_resultado.get_temp()) +' = 0 \n'
+            codigo += '    goto .'+cond_lf + '\n'
+            codigo += '    label .'+cond_lv +' \n'
+            codigo += '    '+str(temp_resultado.get_temp()) +' = 1 \n'
+            codigo += '    label .'+cond_lf +' \n'
+
+            controlador.append_3d(codigo)
+            return temp_resultado
+         else:
+            print(str(self.opIzq.tipo.tipo))
+            print(str(self.opDer.tipo.tipo))
+            error = Excepcion('42883',"Semántico","el operador no existe: "+self.opIzq.tipo.toString()+ self.operador+self.opDer.tipo.toString(),self.linea,self.columna)
+            return error

@@ -66,7 +66,7 @@ class Logica(Instruccion):
                 return error
 
     #******************** traduccion fase 2 *****************
-    def traducir(self, tabla, controlador):
+    def traducir(self, tabla, controlador,arbol):
         codigo =''
 
         if(self.opDer != None):
@@ -82,6 +82,8 @@ class Logica(Instruccion):
             #verificar tipos 
             if (self.opIzq.tipo.tipo != Tipo_Dato.BOOLEAN or self.opDer.tipo.tipo != Tipo_Dato.BOOLEAN):
                 error = Excepcion('42804',"Semántico","El argumento de OR debe ser de tipo boolean",self.linea,self.columna)
+                arbol.excepciones.append(error)
+                arbol.consola.append(error.toString())
                 return error
 
             #etiquetas para el c3d
@@ -153,7 +155,8 @@ class Logica(Instruccion):
                 return temp_resultado
             else:
                 error = Excepcion('42804',"Semántico","Operador desconocido.",self.linea,self.columna)
-               
+                arbol.excepciones.append(error)
+                arbol.consola.append(error.toString())
                 return error
         # Operación unaria
         else:
@@ -190,7 +193,11 @@ class Logica(Instruccion):
                     return temp_resultado
                 else:
                     error = Excepcion('42804',"Semántico","Tipo de datos incorrectos en la operación lógica not",self.linea,self.columna)
+                    arbol.excepciones.append(error)
+                    arbol.consola.append(error.toString())
                     return error
             else:
                 error = Excepcion('42804',"Semántico","Operador desconocido.",self.linea,self.columna)
+                arbol.excepciones.append(error)
+                arbol.consola.append(error.toString())
                 return error

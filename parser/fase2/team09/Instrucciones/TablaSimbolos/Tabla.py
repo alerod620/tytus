@@ -10,9 +10,10 @@ class Tabla():
         tabla = self
         for variable in tabla.variables:
             if variable.id == simbolo.id:
-                return "La variable " + variable.id + " ya ha sido declarada."
+                "La variable " + variable.id + " ya ha sido declarada."
+                return 0
         self.variables.append(simbolo)
-        return None
+        return 1
     
     def getVariable(self,id):
         tabla = self

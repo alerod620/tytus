@@ -8,7 +8,7 @@ from Instrucciones.FunctionBinaryString import Convert, Decode, Encode, GetByte,
 from Instrucciones.FunctionMathematical import Abs, Cbrt, Ceil, Ceiling, Degrees, Div, Exp, Factorial, Floor, Gcd, Lcm, Ln, Log, Log10, MinScale, Mod, PI, Power, Radians, Random, Round, Scale, SetSeed, Sign, Sqrt, TrimScale, Trunc, WidthBucket
 from Instrucciones.FunctionTrigonometric import Acos, Acosd, Acosh, Asin, Asind, Asinh, Atan, Atan2, Atan2d, Atand, Atanh, Cos, Cosd, Cosh, Cot, Cotd, Sin, Sind, Sinh, Tan, Tand, Tanh
 from Instrucciones.Identificador import Identificador
-from Instrucciones.PLpgSQL import Body, CaseWhen, Continue, CreateFunction, Execute, Exit, For, IfElse, Llamada, Loop, Parametro, Variable, While
+from Instrucciones.PLpgSQL import Asignacion, Body, CaseWhen, Continue, CreateFunction, Execute, Exit, For, IfElse, Llamada, Loop, Parametro, Variable, While
 from Instrucciones.Sql_alter import AlterDatabase, AlterDBOwner, AlterIndex, AlterTable, AlterTableAddColumn, AlterTableAddConstraintFK, Columna, AlterTableDropColumn, AlterTableAddConstraint, AlterTableAddFK, AlterTableAlterColumn, AlterTableDropConstraint, AlterTableAlterColumnType, AlterTableAddCheck
 from Instrucciones.Sql_create import CreateDatabase, CreateIndex, Campo, CreateOrReplace, CreateTable, CreateType, Use, ShowDatabases,Set
 from Instrucciones.Sql_create import Columna as CColumna
@@ -24,6 +24,7 @@ from Instrucciones.Sql_update import UpdateTable
 from Instrucciones.TablaSimbolos.Instruccion import Instruccion
 from Instrucciones.TablaSimbolos.Tipo import Tipo, Tipo_Dato
 from Instrucciones.Undefined import Undefined
+from Instrucciones.PLpgSQL.sentencia_return import sentencia_return
 from lexico import *
 from ply import *
 from tkinter.constants import HORIZONTAL
@@ -34,6 +35,8 @@ import instrucciones as inst
 import encabezado as encabezado
 import ast_op as op_ast
 import reglas as r
+
+from Instrucciones.sentencias_control import sentencia_if, sentencia_sino
 
 lista_lexicos=lista_errores_lexico
 
@@ -73,6 +76,25 @@ def p_instrucciones_lista1(t):
 def p_instrucciones_lista2(t):
     'instrucciones : instruccion '
     t[0] = [t[1]]
+
+#***********************************
+#prueba exp 3d
+def p_instruccion_exp(t):
+    'instruccion : expre'
+
+    t[0] = t[1]
+
+def p_instruccion_if_prueba(t):
+    'instruccion : statement_p'
+    t[0] = t[1]
+    #t[0] = t[1]
+
+def p_instruccion_dec_prueba (t):
+    'instruccion : dec_sg'
+    
+    t[0] = t[1][0]
+
+#***********************************
 
 # CREATE INDEX
 def p_instruccion_create_index(t):
@@ -672,7 +694,7 @@ def p_l_par1(t):
     '''l_par : l_par COMA par
     '''
     strGram = "<l_par> ::= <l_par> COMA <par>"
-    t[1].append(t[2])
+    t[1].append(t[3])
     t[0] = t[1]
 
 def p_l_par2(t):
@@ -743,6 +765,7 @@ def p_segment1(t):
     '''
     strGram = "<segment> ::= ID <op_constant> <tipo> <op_nulo> <op_asig> PUNTO_COMA"
     t[0] = Variable.Variable(t[1], t[2], t[3], t[4], t[5], None, strGram, t.lexer.lineno, t.lexer.lexpos)
+
 
 def p_segment2(t):
     '''segment : ID ALIAS FOR R_PAR PUNTO_COMA
@@ -851,59 +874,73 @@ def p_statement4(t):
     '''statement : RETURN expre PUNTO_COMA
     '''
     strGram = "<statement> ::= RETURN <expre> PUNTO_COMA"
-    t[0] = t[1]
+    retorno = sentencia_return(t[1])
+    t[0] = retorno
 
 def p_statement5(t):
-    '''statement : st_if END IF PUNTO_COMA
+    '''statement_p : st_if END IF PUNTO_COMA
     '''
-    strGram = "<statement> ::= <st_if> END IF PUNTO_COMA"
+    strGram = "<statement> ::= st_if END IF PUNTO_COMA"
+    t[0] = t[1]
 
 def p_st_if1(t):
     '''st_if : st_si 
     '''
     strGram = "<st_if> ::= <st_si>"
+    t[0] = sentencia_if.sentencia_if(t[1],None,None)
 
 def p_st_if2(t):
     '''st_if : st_si sts_sino_si
     '''
     strGram = "<st_if> ::= <st_si> <sts_sino_si>"
+    t[0] = sentencia_if.sentencia_if(t[1],t[2],None)
 
 def p_st_if3(t):
     '''st_if : st_si sts_sino_si st_sino
     '''
     strGram = "<st_if> ::= <st_si> <sts_sino_si> <st_sino>"
+    t[0] = sentencia_if.sentencia_if(t[1],t[2],t[3])
 
 def p_st_if4(t):
     '''st_if : st_si st_sino
     '''
     strGram = "<st_if> ::= <st_si> <st_sino>"
+    t[0] = sentencia_if.sentencia_if(t[1],None,t[3])
 
 def p_st_if1_1(t):
     '''st_si : IF expre THEN statements 
     '''
     strGram = "<st_if> ::= IF <expre> THEN <statements>"
+    t[0] = sentencia_sino.sentencia_sino(t[2],t[4])
 
 #----> esto es una lista de elseif's
 def p_st_if2_1(t):
     '''sts_sino_si : sts_sino_si st_sino_si
     '''
     strGram = "<sts_sino_si> ::= <sts_sino_si> <st_sino_si>"
+    t[0] = t[1].append(t[2])
 
 def p_st_if2_2(t):
     '''sts_sino_si : st_sino_si
     '''
     strGram = "<sts_sino_si> ::= <st_sino_si>"
+    t[0] = []
+    t[0].append(t[1])
+
 #----fin lista
 
 def p_st_if2_3(t):
     '''st_sino_si : ELSIF expre THEN statements 
     '''
     strGram = "<st_sino_si> ::= ELSIF <expre> THEN <statements>"
+    t[0] = sentencia_sino.sentencia_sino(t[2],t[4])
 
 def p_st_if2_4(t):
     '''st_sino : ELSE statements
     '''
     strGram = "<st_sino> ::= ELSE <statements>"
+    t[0] = sentencia_sino.sentencia_sino(None,t[2])
+#----termina statmen de los if
 
 def p_statement6(t):
     '''statement : CASE ID st_case
