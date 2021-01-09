@@ -2417,6 +2417,7 @@ def p_inst_generales_declara2(t):
     '''instrucciones_generales : declara_metodo'''
     arr = []
     arr.append(t[1])
+
     t[0] = arr
 
 def p_inst_generales1(t):
@@ -2438,18 +2439,47 @@ def p_inst_generales2(t):
     
     t[0] = arr
 
+def p_instru(t):
+    '''instru : instru instruccion2'''
+    t[1].append(t[2])
+    t[0] = t[1]
+
+def p_instru2(t):
+    '''instru : instruccion2'''
+    arr = []
+    arr.append(t[1])
+    t[0] = arr
+
 def p_declara_metodo(t):
-    '''declara_metodo : DEF ID PARIZQ PARDER DOSP'''
+    '''declara_metodo : ARROBA WITH_GOTO DEF ID PARIZQ PARDER DOSP instru'''
+    arr1 = []
+    arr1.append('declara')
+    n = '@with_goto\ndef ' + str(t[2]) + '():'
+    arr1.append(n)
+    arr1.append(t[8])
+
+    t[0] = arr1
+
+def p_llamada_fun(t):
+    '''llamada_fun : ID PARIZQ PARDER '''
     arr1 = []
     arr1.append('asig')
-    n = 'def ' + str(t[2]) + '():'
+    n =  str(t[1]) + '()'
+    arr1.append(n)
+
+    t[0] = arr1
+
+def p_funcion_print(t):
+    '''funcion_print : PRINT PARIZQ CADENA PARDER'''
+    arr1 = []
+    arr1.append('asig')
+    n =  'print(\'' + str(t[3]) + '\')'
     arr1.append(n)
 
     t[0] = arr1
 
 def p_encabezado(t):
     '''encabezado   : FROM GOTO IMPORT WITH_GOTO
-                    | ARROBA WITH_GOTO DEF ID PARIZQ PARDER DOSP
                     | HEAP IGUAL CORIZQ ENTERO CORDER
                     | STACK IGUAL CORIZQ ENTERO CORDER
                     | H IGUAL ENTERO
@@ -2466,8 +2496,6 @@ def p_encabezado(t):
         n = 'P = ' + str(t[3])
     elif t[1] == 'FROM':
         n = 'from goto import with_goto'
-    elif t[1] == '@':
-        n = '@with_goto\ndef ' + str(t[4]) + '():'
 
     t[0] = n
 
@@ -2485,6 +2513,8 @@ def p_temporales1(t):
 
 def p_instruccion_2(t):
     '''instruccion2 : asignacion
+                    | llamada_fun
+                    | funcion_print
                     | salto_incondicional
                     | salto_condicional
                     | salto'''

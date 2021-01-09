@@ -81,7 +81,7 @@ reservadas = (
     #### OPTIMIZACIÓN C3D
     'IMPORT', 'RETURN', 'DEF', '__INIT__', 
     'SELF', 'CLASS', 'HEAP', 'STACK', 'H', 'P',
-    'GOTO', 'LABEL', 'WITH_GOTO'
+    'GOTO', 'LABEL', 'WITH_GOTO', 'PRINT'
 )
 
 tokens = reservadas + (
