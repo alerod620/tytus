@@ -36,9 +36,8 @@ class Campo(Instruccion):
             self.restricciones = self.restricciones + self.null
         self.restricciones = self.restricciones + "; "
 
-    def traducir(self, tabla, controlador, arbol):
+    def getCode(self):
         codigo = 'Campo.Campo("' + self.nombre + '", ' + str(self.lower) + ', '
-        codigo += self.orden.traducir(tabla, controlador, arbol) + ', '
-        codigo += self.null.traducir(tabla, controlador, arbol) + ', "'
+        codigo += self.orden.getCode() + ', ' + self.null.getCode() + ', "'
         codigo += self.strGram + '", ' + str(self.linea) + ', '
         return codigo + str(self.columna) + ')'

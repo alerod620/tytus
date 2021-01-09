@@ -69,3 +69,10 @@ class DeleteTable(Instruccion):
         
         nuevo = set(res)
         return nuevo
+
+    def traducir(self, tabla, controlador, arbol):
+        codigo  = '\t#DELETE TABLE\n\tDeleteTable.DeleteTable("' + self.valor + '", '
+        codigo += 'None, ' + self.insWhere.getCode() + ', "' + self.strGram + '", '
+        codigo += str(self.linea) + ', ' + str(self.columna)
+        codigo += ').ejecutar(tabla, arbol)\n'
+        controlador.append_3d_ejecutar(codigo)

@@ -41,7 +41,7 @@ class Tipo_Constraint():
         elif self.tipo == Tipo_Dato_Constraint.CHECK:
             return "check"
 
-    def traducir(self, tabla, controlador, arbol):
+    def getCode(self):
         codigo = 'Tipo_Constraint('
         if self.id is None:
             codigo += 'None, Tipo_Dato_Constraint.'
@@ -78,5 +78,5 @@ class Tipo_Constraint():
                 codigo += '"' + exp + '", '
             codigo = codigo[0:-2] + '])'
         else:
-            codigo += self.expresion.traducir(tabla, controlador, arbol) + ')'
+            codigo += self.expresion.getCode() + ')'
         return codigo

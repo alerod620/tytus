@@ -7,7 +7,7 @@ import numpy as np
 
 class Between(Instruccion):
     def __init__(self, opIzq, opDer, opDer2, operador, strGram,linea, columna):
-        Instruccion.__init__(self,Tipo(Tipo_Dato.BOOLEAN),linea,columna,strGram)
+        Instruccion.__init__(self, Tipo(Tipo_Dato.BOOLEAN), linea, columna, strGram)
         self.opIzq = opIzq
         self.opDer = opDer
         self.opDer2 = opDer2
@@ -156,3 +156,10 @@ class Between(Instruccion):
                 arbol.excepciones.append(error)
                 arbol.consola.append(error.toString())
                 return error
+
+    def getCode(self):
+        codigo  = 'Between.Between(' + self.opIzq.getCode() + ', '
+        codigo += self.opDer.getCode() + ', ' + self.opDer2.getCode() + ', '
+        codigo += ', "' + self.operador + '", "' + self.strGram + '", '
+        codigo += str(self.linea) + ', ' + str(self.columna) + ')'
+        return codigo

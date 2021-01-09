@@ -6,3 +6,6 @@ class Empty(Instruccion):
 
     def ejecutar(self, tabla, arbol):
         return None
+
+    def getCode(self):
+        return 'Empty.Empty(None, None, None, 0, 0)'

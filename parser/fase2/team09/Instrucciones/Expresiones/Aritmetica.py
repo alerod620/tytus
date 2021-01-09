@@ -890,3 +890,13 @@ class Aritmetica(Instruccion):
                 arbol.consola.append(error.toString())
                 return error
         return None
+
+    def getCode(self):
+        codigo  = 'Aritmetica.Aritmetica(' + self.opIzq.getCode() + ', '
+        if self.opDer is None:
+            codigo += 'None, "' + self.operador + '", "'
+        else:
+            codigo += self.opDer.getCode() + ', "' + self.operador + '", "'
+        codigo += self.strGram + '", ' + str(self.linea) + ', '
+        codigo += str(self.columna) + ')'
+        return codigo

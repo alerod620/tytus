@@ -80,26 +80,17 @@ class CreateIndex(Instruccion):
                             self.constraint.append(Cons(restricciones, "campo(s)"))
                         else:
                             self.constraint.append(Cons(restricciones, "<br>campos(s)"))
-                        print(t.lista_de_campos)
-                        print(self)
                         t.lista_de_campos.append(self)
-                        print(t.lista_de_campos)
                         arbol.consola.append("\nSe ha creado el índice «" + self.nombre + "» correctamente.")
                         return
 
     def traducir(self, tabla, controlador, arbol):
         codigo = '\t#CREATE INDEX\n\tCreateIndex.CreateIndex('
-        codigo += self.unique.traducir(tabla, controlador, arbol) + ', "'
-        codigo += self.nombre + '", "' + self.tabla + '", '
-        codigo += self.using.traducir(tabla, controlador, arbol) + ', ['
-        for i in range(len(self.campos)):
-            c = self.campos[i]
-            codigo += c.traducir(tabla, controlador, arbol)
-            if i == len(self.campos) - 1:
-                codigo += '], '
-            else:
-                codigo += ', '
-        codigo += self.condicion.traducir(tabla, controlador, arbol) + ', "'
+        codigo += self.unique.getCode() + ', "' + self.nombre + '", "'
+        codigo += self.tabla + '", ' + self.using.getCode() + ', ['
+        for c in self.campos:
+            codigo += c.getCode() + ', '
+        codigo = codigo[0:-2] + '], ' + self.condicion.getCode() + ', "'
         codigo += self.strGram + '", ' + str(self.linea) + ', '
         codigo += str(self.columna) + ').ejecutar(tabla, arbol)\n'
         controlador.append_3d_ejecutar(codigo)

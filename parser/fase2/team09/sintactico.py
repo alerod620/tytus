@@ -578,7 +578,7 @@ def p_instruccion_truncate(t):
     '''instruccion : TRUNCATE TABLE ID PUNTO_COMA
     '''
     strGram = "<instruccion> ::= TRUNCATE TABLE ID PUNTO_COMA"
-    t[0] =Truncate.Truncate(t[3], None, strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Truncate.Truncate(t[3], None, strGram, t.lexer.lineno, t.lexer.lexpos)
 
 # DROP DATABASE
 def p_instruccion_drop_database1(t):
@@ -600,40 +600,36 @@ def p_instruccion_drop(t):
     strGram = "<instruccion> ::= DROP TABLE ID PUNTO_COMA"
     t[0] = DropTable.DropTable(t[3], None, strGram, t.lexer.lineno, t.lexer.lexpos)
 
-def p_instruccion_where(t):
-    '''
-        instructionWhere :  WHERE expre
-    '''
-    strGram = "<instructionWhere> ::=  WHERE <expre>"
-    t[0] = Where.Where(t[2],None, strGram, t.lexer.lineno, t.lexer.lexpos)
-
-# update tabla set campo = valor , campo 2= valor where condicion
-
-def p_instruccion_update(t):
-    '''instruccion : UPDATE ID SET lcol instructionWhere PUNTO_COMA
-
-    '''
-    strGram = "<instruccion> ::= UPDATE ID SET <lcol> <instructionWhere> PUNTO_COMA"
-    strGram2 = ""
-    id1 = Identificador(t[2], strGram2 ,t.lexer.lineno, t.lexer.lexpos)
-    t[0] = UpdateTable.UpdateTable(id1, None, t[4], t[5], strGram ,t.lexer.lineno, t.lexer.lexpos)
-
-# update tabla set campo = valor , campo 2= valor;
-
-def p_instruccion_update2(t):
-    '''instruccion : UPDATE ID SET lcol PUNTO_COMA
-    '''
-    strGram = "<instruccion> ::= UPDATE ID SET <lcol> PUNTO_COMA"
-    strGram2 = ""
-    id1 = Identificador(t[2], strGram2 ,t.lexer.lineno, t.lexer.lexpos)
-    t[0] = UpdateTable.UpdateTable(id1, None, t[4], None, strGram ,t.lexer.lineno, t.lexer.lexpos)
-
 # DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
 def p_columunas_delete(t):
     '''instruccion : DELETE FROM ID instructionWhere PUNTO_COMA
     '''
     strGram = "<instruccion> ::= DELETE FROM ID <instructionWhere> PUNTO_COMA"
-    t[0] = DeleteTable.DeleteTable(t[3],None, t[4], strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = DeleteTable.DeleteTable(t[3], None, t[4], strGram, t.lexer.lineno, t.lexer.lexpos)
+
+# update tabla set campo = valor , campo 2= valor where condicion
+def p_instruccion_update(t):
+    '''instruccion : UPDATE ID SET lcol instructionWhere PUNTO_COMA
+    '''
+    strGram = "<instruccion> ::= UPDATE ID SET <lcol> <instructionWhere> PUNTO_COMA"
+    strGram2 = ""
+    id1 = Identificador(t[2], strGram2, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = UpdateTable.UpdateTable(id1, None, t[4], t[5], strGram, t.lexer.lineno, t.lexer.lexpos)
+
+# update tabla set campo = valor , campo 2= valor;
+def p_instruccion_update2(t):
+    '''instruccion : UPDATE ID SET lcol PUNTO_COMA
+    '''
+    strGram = "<instruccion> ::= UPDATE ID SET <lcol> PUNTO_COMA"
+    strGram2 = ""
+    id1 = Identificador(t[2], strGram2, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = UpdateTable.UpdateTable(id1, None, t[4], None, strGram, t.lexer.lineno, t.lexer.lexpos)
+
+def p_instruccion_where(t):
+    '''instructionWhere :  WHERE expre
+    '''
+    strGram = "<instructionWhere> ::=  WHERE <expre>"
+    t[0] = Where.Where(t[2], None, strGram, t.lexer.lineno, t.lexer.lexpos)
 
 # EXEC
 def p_instruccion_execute(t):
@@ -1525,9 +1521,7 @@ def p_operadores_relacionales(t):
         strGram = "<expre> ::= <expre> MENOR_IGUALQ <expre>"
     elif t[2] == "DISTINTO":
         strGram = "<expre> ::= <expre> DISTINTO <expre>"
-
-    
-    t[0] = Relacional.Relacional(t[1], t[3], t[2],strGram ,t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Relacional.Relacional(t[1], t[3], t[2], strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_operadores_aritmeticos(t):
     '''expre : expre MAS expre
@@ -1537,7 +1531,6 @@ def p_operadores_aritmeticos(t):
             | expre EXPONENCIACION expre
             | expre MODULO expre
     '''
-    
     strGram = ""
     if t[2] == "MAS":
         strGram = "<expre> ::= <expre> MAS <expre>"
@@ -1551,13 +1544,12 @@ def p_operadores_aritmeticos(t):
         strGram = "<expre> ::= <expre> EXPONENCIACION <expre>"
     elif t[2] == "MODULO":
         strGram = "<expre> ::= <expre> MODULO <expre>"
-
-    t[0] = Aritmetica.Aritmetica(t[1], t[3], t[2], strGram ,t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Aritmetica.Aritmetica(t[1], t[3], t[2], strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_operador_unario(t):
     'expre : MENOS expre %prec UMENOS'
     strGram = "<expre> ::= MENOS <expre> %prec UMENOS"
-    t[0] = Aritmetica.Aritmetica(t[2], None, '-', strGram,t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Aritmetica.Aritmetica(t[2], None, '-', strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_operadores_like(t):
     '''expre : expre LIKE expre
@@ -1567,27 +1559,20 @@ def p_operadores_like(t):
     if t[2] == "NOT":
         strGram = "<expre> ::= <expre> NOT LIKE <expre>"
         t[0] = Relacional.Relacional(t[1], t[4], "NOT LIKE", strGram, t.lexer.lineno, t.lexer.lexpos)
-
     else: 
         strGram = "<expre> ::= <expre> LIKE <expre>"
         t[0] = Relacional.Relacional(t[1], t[3], "LIKE", strGram, t.lexer.lineno, t.lexer.lexpos)
-        
-    #t[0] = PatternMatching(t[1], t[3], 'LIKE', t.lexer.lineno, t.lexer.lexpos) if t[2] == 'LIKE' else PatternMatching(t[1], t[3], 'NOT_LIKE', t.lexer.lineno, t.lexer.lexpos)
 
 def p_operadores_between(t):
     '''expre : expre BETWEEN expresion AND expresion
             | expre NOT BETWEEN expresion AND expresion
     '''
-
     if t[2] == "NOT":
         strGram = "<expre> ::= <expre> NOT BETWEEN <expresion> AND <expresion>"
         t[0] = Between.Between(t[1], t[4], t[6], "NOT", strGram, t.lexer.lineno, t.lexer.lexpos)
-
     else:
         strGram = "<expre> ::= <expre> BETWEEN <expresion> AND <expresion>"
         t[0] = Between.Between(t[1], t[3], t[5], "", strGram, t.lexer.lineno, t.lexer.lexpos)
-
-    #t[0] = Between(t[1], t[3], t[5], 'BETWEEN', t.lexer.lineno, t.lexer.lexpos) if t[2] == 'LIKE' else Between(t[1], t[4], t[5], 'NOT_BETWEEN', t.lexer.lineno, t.lexer.lexpos)
 
 def p_operadores_in(t):
     '''expre : expre IN expre
@@ -1597,7 +1582,6 @@ def p_operadores_in(t):
     if t[2] == "NOT":
         strGram = "<expre> ::= <expre> NOT INT <expre>"
         t[0] = Relacional.Relacional(t[1], t[4], "NOT IN", strGram, t.lexer.lineno, t.lexer.lexpos)
-
     else: 
         strGram = "<expre> ::= <expre> IN <expre>"
         t[0] = Relacional.Relacional(t[1], t[3], "IN", strGram, t.lexer.lineno, t.lexer.lexpos)
@@ -2120,7 +2104,7 @@ def p_expresion(t):
     strGram = "<l_expresiones> ::= <l_expresiones> COMA <expre>\n"
     strGram = strGram + "<l_expresiones> ::= <expre>\n"
     strGram = strGram + "<expresion> ::= CADENA"
-    t[0] = Primitivo.Primitivo(t[1],Tipo(Tipo_Dato.TEXT), strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Primitivo.Primitivo(t[1], Tipo(Tipo_Dato.TEXT), strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_expresion1(t):
     '''expresion : CARACTER
@@ -2128,7 +2112,7 @@ def p_expresion1(t):
     strGram = "<l_expresiones> ::= <l_expresiones> COMA <expre>\n"
     strGram = strGram + "<l_expresiones> ::= <expre>\n"
     strGram = strGram + "<expresion> ::= CARACTER"
-    t[0] = Primitivo.Primitivo(t[1],Tipo(Tipo_Dato.CHAR), strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Primitivo.Primitivo(t[1], Tipo(Tipo_Dato.CHAR), strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_expresion2(t):
     '''expresion : ENTERO
@@ -2144,7 +2128,7 @@ def p_expresion3(t):
     strGram = "<l_expresiones> ::= <l_expresiones> COMA <expre>\n"
     strGram = strGram + "<l_expresiones> ::= <expre>\n"
     strGram = strGram + "<expresion> ::= FDECIMAL"
-    t[0] = Primitivo.Primitivo(t[1],Tipo(Tipo_Dato.NUMERIC), strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Primitivo.Primitivo(t[1], Tipo(Tipo_Dato.NUMERIC), strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_expresion4(t):
     '''expresion : DOUBLE
@@ -2152,7 +2136,7 @@ def p_expresion4(t):
     strGram = "<l_expresiones> ::= <l_expresiones> COMA <expre>\n"
     strGram = strGram + "<l_expresiones> ::= <expre>\n"
     strGram = strGram +"<expresion> ::= DOUBLE"
-    t[0] = Primitivo.Primitivo(t[1],Tipo(Tipo_Dato.DOUBLE_PRECISION), strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Primitivo.Primitivo(t[1], Tipo(Tipo_Dato.DOUBLE_PRECISION), strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_expresion5(t):
     '''expresion : ID
@@ -2160,7 +2144,6 @@ def p_expresion5(t):
     strGram = "<l_expresiones> ::= <l_expresiones> COMA <expre>\n"
     strGram = strGram + "<l_expresiones> ::= <expre>\n"
     strGram = strGram + "<expresion> ::= ID"
-    #t[0] = Primitivo.Primitivo(t[1],Tipo_Dato.ID, t.lexer.lineno, t.lexer.lexpos)
     t[0] = Identificador(t[1], strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_expresion61(t):
@@ -2170,7 +2153,6 @@ def p_expresion61(t):
     strGram = strGram + "<l_expresiones> ::= <expre>\n"
     strGram = strGram + "<expresion> ::= ID PUNTO ID"
     t[0] = SelectLista.Alias(t[1],t[3])
-    #t[0] = Primitivo.Primitivo(f"{t[1]}.{t[3]}",Tipo_Dato.ID, strGram,t.lexer.lineno, t.lexer.lexpos)
 
 def p_expresion62(t):
     '''expresion : ID PUNTO POR
@@ -2179,7 +2161,6 @@ def p_expresion62(t):
     strGram = strGram + "<l_expresiones> ::= <expre>\n"
     strGram = strGram + "<expresion> ::= ID PUNTO POR"
     t[0] = SelectLista.Alias(t[1],t[3])
-    #t[0] = Primitivo.Primitivo(f"{t[1]}.{t[3]}",Tipo_Dato.ID, strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_expresion7(t):
     '''expresion : ARROBA ID
@@ -2187,7 +2168,7 @@ def p_expresion7(t):
     strGram = "<l_expresiones> ::= <l_expresiones> COMA <expre>\n"
     strGram = strGram + "<l_expresiones> ::= <expre>\n"
     strGram = strGram + "<expresion> ::= ARROBA ID"
-    t[0] = Primitivo.Primitivo(t[1],Tipo_Dato.ARROBA, strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Primitivo.Primitivo(t[1], Tipo_Dato.ARROBA, strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_expresion8(t):
     '''expresion : ID PARIZQ lcol PARDER
@@ -2200,7 +2181,7 @@ def p_expresion9(t):
     strGram = "<l_expresiones> ::= <l_expresiones> COMA <expre>\n"
     strGram = strGram + "<l_expresiones> ::= <expre>\n"
     strGram = strGram + "<expresion> ::= TRUE"
-    t[0] = Primitivo.Primitivo(True,Tipo(Tipo_Dato.BOOLEAN), strGram, t.lexer.lineno, t.lexer.lexpos)
+    t[0] = Primitivo.Primitivo(True, Tipo(Tipo_Dato.BOOLEAN), strGram, t.lexer.lineno, t.lexer.lexpos)
 
 def p_expresion10(t):
     '''expresion : FALSE
@@ -2214,7 +2195,6 @@ def p_expresion10(t):
 def p_lista_columas(t):
     '''lcol : lcol COMA expre
     '''
-    #print("entro aqui 1")
     t[1].append(t[3])
     t[0] = t[1]
 

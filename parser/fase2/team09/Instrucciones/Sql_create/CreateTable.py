@@ -186,17 +186,14 @@ class CreateTable(Instruccion):
         codigo  = '\t#CREATE TABLE\n\tCreateTable.CreateTable("' + self.tabla
         codigo += '", None, [' 
         for c in self.campos:
-            codigo += c.traducir(tabla, controlador, arbol) + ', '
+            codigo += c.getCode() + ', '
         codigo = codigo[0:-2] + '], '
         if self.herencia is None:
-            codigo += 'None, "'
+            codigo += 'None, "' + self.strGram + '", '
         else:
-            codigo += '['
-            for c in self.herencia:
-                codigo += c.traducir(tabla, controlador, arbol) + ', '
-            codigo = codigo[0:-2] + '], "'
-        codigo += self.strGram + '", ' + str(self.linea) + ', '
-        codigo += str(self.columna) + ').ejecutar(tabla, arbol)\n'
+            codigo += '"' + self.herencia + '", "' + self.strGram + '", '
+        codigo += str(self.linea) + ', ' + str(self.columna)
+        codigo += ').ejecutar(tabla, arbol)\n'
         controlador.append_3d_ejecutar(codigo)
 
 class IdentificadorColumna(Instruccion):

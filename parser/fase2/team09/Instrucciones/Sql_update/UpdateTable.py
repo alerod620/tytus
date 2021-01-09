@@ -9,16 +9,16 @@ import numpy as np
 class UpdateTable(Instruccion):
     def __init__(self, id, tipo, lCol, insWhere, strGram ,linea, columna):
         Instruccion.__init__(self,tipo,linea,columna, strGram)
-        self.identificador = id
+        self.id = id
         self.listaDeColumnas = lCol
         self.insWhere = insWhere
 
     def ejecutar(self, tabla, arbol):
         super().ejecutar(tabla,arbol)
-        val = self.identificador.devolverTabla(tabla, arbol)
+        val = self.id.devolverTabla(tabla, arbol)
         
         if(val == 0):
-            error = Excepcion("42P01", "Semantico", "La tabla " + str(self.identificador.devolverId(tabla, arbol)) + " no existe", self.linea, self.columna)
+            error = Excepcion("42P01", "Semantico", "La tabla " + str(self.id.devolverId(tabla, arbol)) + " no existe", self.linea, self.columna)
             arbol.excepciones.append(error)
             arbol.consola.append(error.toString())
             print('Error tabla no existe')
@@ -83,13 +83,13 @@ class UpdateTable(Instruccion):
                             arbol.setUpdate()
                             return error
                         elif resultado == 3:
-                            error = Excepcion("42P01", "Semantico", "La tabla " + str(self.identificador.devolverId(tabla, arbol)) + " no existe", self.linea, self.columna)
+                            error = Excepcion("42P01", "Semantico", "La tabla " + str(self.id.devolverId(tabla, arbol)) + " no existe", self.linea, self.columna)
                             arbol.excepciones.append(error)
                             arbol.consola.append(error.toString())
                             arbol.setUpdate()
                             return error
                         elif resultado == 4:
-                            error = Excepcion("42P01", "Semantico", "La llave "+ str(lPK[0]) +" de la tabla "+ str(self.identificador.devolverId(tabla, arbol)) + " no existe", self.linea, self.columna)
+                            error = Excepcion("42P01", "Semantico", "La llave "+ str(lPK[0]) +" de la tabla "+ str(self.id.devolverId(tabla, arbol)) + " no existe", self.linea, self.columna)
                             arbol.excepciones.append(error)
                             arbol.consola.append(error.toString())
                             arbol.setUpdate()
@@ -130,13 +130,13 @@ class UpdateTable(Instruccion):
                             arbol.setUpdate()
                             return error
                         elif resultado == 3:
-                            error = Excepcion("42P01", "Semantico", "La tabla " + str(self.identificador.devolverId(tabla, arbol)) + " no existe", self.linea, self.columna)
+                            error = Excepcion("42P01", "Semantico", "La tabla " + str(self.id.devolverId(tabla, arbol)) + " no existe", self.linea, self.columna)
                             arbol.excepciones.append(error)
                             arbol.consola.append(error.toString())
                             arbol.setUpdate()
                             return error
                         elif resultado == 4:
-                            error = Excepcion("42P01", "Semantico", "La llave "+ str(lPK[0]) +" de la tabla "+ str(self.identificador.devolverId(tabla, arbol)) + " no existe", self.linea, self.columna)
+                            error = Excepcion("42P01", "Semantico", "La llave "+ str(lPK[0]) +" de la tabla "+ str(self.id.devolverId(tabla, arbol)) + " no existe", self.linea, self.columna)
                             arbol.excepciones.append(error)
                             arbol.consola.append(error.toString())
                             arbol.setUpdate()
@@ -163,15 +163,12 @@ class UpdateTable(Instruccion):
 
         return listaEnteros
 
-
-
     def obtenerValores(self, tupla, posicionPK):
         #recorremos la lista que trae el num de columna
         listaPK = []
         for x in range(0, len(posicionPK)):
             listaPK.append(tupla[posicionPK[x]])
         return listaPK
-
 
     def validacionTipos(self, tipoColumna, tipoValor, val, arbol):
         if (tipoColumna.tipo == Tipo_Dato.MONEY) and (tipoValor.tipo == Tipo_Dato.CHAR):
@@ -229,7 +226,7 @@ class UpdateTable(Instruccion):
         return False
         
         
-        '''if(self.identificador != None):
+        '''if(self.id != None):
             if(self.listaDeColumnas != None):
                 if(self.insWhere != None):
                     update(arbol.database())
@@ -238,8 +235,12 @@ class UpdateTable(Instruccion):
         def update(database: str, table: str, register: dict, columns: list) -> int:
             '''
 
-
-'''
-instruccion = UpdateTable("hola mundo",None, 1,2)
-instruccion.ejecutar(None,None)
-'''
+    def traducir(self, tabla, controlador, arbol):
+        codigo  = '\t#UPDATE TABLE\n\tUpdateTable.UpdateTable('
+        codigo += self.id.getCode() + ', None, ['
+        for c in self.listaDeColumnas:
+            codigo += c.getCode() + ', '
+        codigo = codigo[0:-2] + '], ' + self.insWhere.getCode() + ', "'
+        codigo += self.strGram + '", ' + str(self.linea) + ', '
+        codigo += str(self.columna) + ').ejecutar(tabla, arbol)\n'
+        controlador.append_3d_ejecutar(codigo)

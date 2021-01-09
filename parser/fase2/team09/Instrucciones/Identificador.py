@@ -9,11 +9,11 @@ from Instrucciones.Tablas.Campo import Campo
 from storageManager.jsonMode import *
 
 from Instrucciones.C3D.temporal import temporal
-
 import numpy as np
+
 class Identificador(Instruccion):
     def __init__(self, id, strGram, linea, columna):
-        Instruccion.__init__(self,Tipo(Tipo_Dato.ID),linea,columna,strGram)
+        Instruccion.__init__(self, Tipo(Tipo_Dato.ID), linea, columna, strGram)
         self.id = id
 
     def ejecutar(self, tabla, arbol):
@@ -67,7 +67,7 @@ class Identificador(Instruccion):
     def devolverId(self, tabla, arbol):
         return self.id
 
-    def devolverTabla(self,tabla,arbol):
+    def devolverTabla(self, tabla, arbol):
         super().ejecutar(tabla,arbol)
         valor = arbol.devolviendoTablaDeBase(self.id)
         if(valor == 0):
@@ -77,7 +77,7 @@ class Identificador(Instruccion):
             print("tabla encontrada")
             return self.id
 
-    def comprobar(self,tabla,arbol):
+    def comprobar(self, tabla, arbol):
         super().ejecutar(tabla,arbol)
         variable = tabla.getVariable(self.id)
         if variable == None:
@@ -111,3 +111,8 @@ class Identificador(Instruccion):
             codigo += '    '+str(temp2.get_temp())+ ' = stack['+str(temp1.get_temp())+']  \n'
             controlador.append_3d(codigo)
             return temp2
+
+    def getCode(self):
+        cadena  = 'Identificador("' + self.id + '", "' + self.strGram + '", '
+        cadena += str(self.linea) + ', ' + str(self.columna) + ')'
+        return cadena

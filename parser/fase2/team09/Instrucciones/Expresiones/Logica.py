@@ -5,7 +5,7 @@ from Instrucciones.C3D.temporal import temporal
 
 class Logica(Instruccion):
     def __init__(self, opIzq, opDer, operador, strGram, linea, columna):
-        Instruccion.__init__(self,Tipo(Tipo_Dato.BOOLEAN),linea,columna,strGram)
+        Instruccion.__init__(self, Tipo(Tipo_Dato.BOOLEAN), linea, columna, strGram)
         self.opIzq = opIzq
         self.opDer = opDer
         self.operador = operador
@@ -66,7 +66,7 @@ class Logica(Instruccion):
                 return error
 
     #******************** traduccion fase 2 *****************
-    def traducir(self, tabla, controlador,arbol):
+    def traducir(self, tabla, controlador, arbol):
         codigo =''
 
         if(self.opDer != None):
@@ -201,3 +201,13 @@ class Logica(Instruccion):
                 arbol.excepciones.append(error)
                 arbol.consola.append(error.toString())
                 return error
+
+    def getCode(self):
+        codigo  = 'Logica.Logica(' + self.opIzq.getCode() + ', '
+        if self.opDer is None:
+            codigo += 'None, "' + self.operador + '", "'
+        else:
+            codigo += self.opDer.getCode() + ', "' + self.operador + '", "'
+        codigo += self.strGram + '", ' + str(self.linea) + ', '
+        codigo += str(self.columna) + ')'
+        return codigo

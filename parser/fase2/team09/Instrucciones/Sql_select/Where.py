@@ -16,11 +16,9 @@ class Where(Instruccion):
         val = self.valor.ejecutar(tabla,arbol)
         print("hola me ejecuto en el where porque ahora soy un update")
         return val
-        
-        
 
-'''
-instruccion = Where("hola mundo",None, 1,2)
-
-instruccion.ejecutar(None,None)
-'''
+    def getCode(self):
+        codigo  = 'Where.Where(' + self.valor.getCode() + ', None, "'
+        codigo += self.strGram + '", ' + str(self.linea) + ', '
+        codigo += str(self.columna) + ')'
+        return codigo

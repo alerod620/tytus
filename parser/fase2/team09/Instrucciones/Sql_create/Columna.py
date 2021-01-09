@@ -10,15 +10,15 @@ class Columna(Instruccion):
     def ejecutar(self, tabla, arbol):
         super().ejecutar(tabla,arbol)
 
-    def traducir(self, tabla, controlador, arbol):
+    def getCode(self):
         codigo = 'CColumna.Columna("' + self.nombre + '", '
-        codigo += self.tipo.traducir(tabla, controlador, arbol) + ', '
+        codigo += self.tipo.getCode() + ', '
         if self.constraint is None:
-            codigo += 'None, "'
+            codigo += 'None, "' + self.strGram + '", ' + str(self.linea)
         else:
             codigo += '['
             for c in self.constraint:
-                codigo += c.traducir(tabla, controlador, arbol) + ', '
-            codigo = codigo[0:-2] + '], "'
-        codigo += self.strGram + '", ' + str(self.linea) + ', '
-        return codigo + str(self.columna) + ')'
+                codigo += c.getCode() + ', '
+            codigo = codigo[0:-2] + '], "' + self.strGram + '", ' + str(self.linea)
+        codigo += ', ' + str(self.columna) + ')'
+        return codigo

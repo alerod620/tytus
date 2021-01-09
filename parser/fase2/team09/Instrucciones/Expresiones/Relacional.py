@@ -7,12 +7,11 @@ import time
 import numpy as np
 
 class Relacional(Instruccion):
-    def __init__(self, opIzq, opDer, operador, strGram,linea, columna):
-        Instruccion.__init__(self,Tipo(Tipo_Dato.BOOLEAN),linea,columna,strGram)
+    def __init__(self, opIzq, opDer, operador, strGram, linea, columna):
+        Instruccion.__init__(self, Tipo(Tipo_Dato.BOOLEAN), linea, columna, strGram)
         self.opIzq = opIzq
         self.opDer = opDer
         self.operador = operador
-
 
     def ejecutar(self, tabla, arbol):
         super().ejecutar(tabla,arbol)
@@ -836,3 +835,10 @@ class Relacional(Instruccion):
             print(str(self.opDer.tipo.tipo))
             error = Excepcion('42883',"Semántico","el operador no existe: "+self.opIzq.tipo.toString()+ self.operador+self.opDer.tipo.toString(),self.linea,self.columna)
             return error
+
+    def getCode(self):
+        codigo  = 'Relacional.Relacional(' + self.opIzq.getCode() + ', '
+        codigo += self.opDer.getCode() + ', "' + self.operador + '", "'
+        codigo += self.strGram + '", ' + str(self.linea) + ', '
+        codigo += str(self.columna) + ')'
+        return codigo

@@ -18,19 +18,21 @@ class DropIndex(Instruccion):
                         if c.nombre == self.nombre:
                             encontrado = True
                             break
-                if not encontrado and self.existe:
-                    error = Excepcion('INX03', "Semántico", "No existe un índice llamado «" + self.nombre + "»", self.linea, self.columna)
-                    arbol.excepciones.append(error)
-                    arbol.consola.append("\n" + error.toString())
-                    err = True
-                    return
-                elif not encontrado:
-                    arbol.consola.append("\nNo se ha encontrado el índice «" + self.nombre + "».")
-                    return
-                else:
-                    t.lista_de_campos.pop(i)
-                    arbol.consola.append("\nSe ha eliminado el índice «" + self.nombre + "» correctamente.")
-                    return
+                if encontrado:
+                    break
+            if not encontrado and self.existe:
+                error = Excepcion('INX03', "Semántico", "No existe un índice llamado «" + self.nombre + "»", self.linea, self.columna)
+                arbol.excepciones.append(error)
+                arbol.consola.append("\n" + error.toString())
+                err = True
+                return
+            elif not encontrado:
+                arbol.consola.append("\nNo se ha encontrado el índice «" + self.nombre + "».")
+                return
+            else:
+                t.lista_de_campos.pop(i)
+                arbol.consola.append("\nSe ha eliminado el índice «" + self.nombre + "» correctamente.")
+                return
 
     def traducir(self, tabla, controlador, arbol):
         codigo  = '\t#DROP INDEX\n\tDropIndex.DropIndex(' + str(self.existe) + ', "'

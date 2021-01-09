@@ -88,7 +88,7 @@ class Tipo():
         elif self.tipo == Tipo_Dato.VOID:
             return "void"
 
-    def traducir(self, tabla, controlador, arbol):
+    def getCode(self):
         codigo = 'Tipo(Tipo_Dato.' 
         if self.tipo == Tipo_Dato.SMALLINT:
             codigo += 'SMALLINT, '
