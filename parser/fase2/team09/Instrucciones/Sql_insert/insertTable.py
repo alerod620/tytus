@@ -374,7 +374,14 @@ class insertTable(Instruccion):
         else:
             codigo += '['
             for c in self.lcol:
-                codigo += c.getCode() + ', '
+                if str(c) == 'True' or str(c) == 'False':
+                    codigo += c + ', '
+                else:
+                    try:
+                        int(c)
+                        codigo += str(c) + ', '
+                    except:
+                        codigo += '"' + c + '", '
             codigo = codigo[0:-2] + '], ['
         for e in self.lexpre:
             codigo += e.getCode() + ', '

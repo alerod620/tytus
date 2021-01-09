@@ -52,7 +52,7 @@ class controlador():
         self.c3d += codigo +'\n'
 
     def append_3d_ejecutar(self,codigo):
-        print('---'+str(self.bandera))
+        codigo = codigo.replace('\t', '    ')
         if(self.bandera == True):
             self.c3d += codigo +'\n'
         else:
