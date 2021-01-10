@@ -77,25 +77,6 @@ def p_instrucciones_lista2(t):
     'instrucciones : instruccion '
     t[0] = [t[1]]
 
-#***********************************
-#prueba exp 3d
-def p_instruccion_exp(t):
-    'instruccion : expre'
-
-    t[0] = t[1]
-
-def p_instruccion_if_prueba(t):
-    'instruccion : statement_p'
-    t[0] = t[1]
-    #t[0] = t[1]
-
-def p_instruccion_dec_prueba (t):
-    'instruccion : dec_sg'
-    
-    t[0] = t[1][0]
-
-#***********************************
-
 # CREATE INDEX
 def p_instruccion_create_index(t):
     '''instruccion : CREATE op_unique INDEX ID ON ID op_using PARIZQ ls_index_col PARDER op_where PUNTO_COMA
@@ -2374,6 +2355,7 @@ def p_inst_generales_declara2(t):
     '''instrucciones_generales : declara_metodo'''
     arr = []
     arr.append(t[1])
+
     t[0] = arr
 
 def p_inst_generales1(t):
@@ -2395,22 +2377,52 @@ def p_inst_generales2(t):
     
     t[0] = arr
 
+def p_instru(t):
+    '''instru : instru instruccion2'''
+    t[1].append(t[2])
+    t[0] = t[1]
+
+def p_instru2(t):
+    '''instru : instruccion2'''
+    arr = []
+    arr.append(t[1])
+    t[0] = arr
+
 def p_declara_metodo(t):
-    '''declara_metodo : DEF ID PARIZQ PARDER DOSP'''
+    '''declara_metodo : ARROBA WITH_GOTO DEF ID PARIZQ PARDER DOSP instru'''
+    arr1 = []
+    arr1.append('declara')
+    n = '@with_goto\ndef ' + str(t[4]) + '():'
+    arr1.append(n)
+    arr1.append(t[8])
+
+    t[0] = arr1
+
+def p_llamada_fun(t):
+    '''llamada_fun : ID PARIZQ PARDER '''
     arr1 = []
     arr1.append('asig')
-    n = 'def ' + str(t[2]) + '():'
+    n =  str(t[1]) + '()'
+    arr1.append(n)
+
+    t[0] = arr1
+
+def p_funcion_print(t):
+    '''funcion_print : PRINT PARIZQ CADENA PARDER'''
+    arr1 = []
+    arr1.append('asig')
+    n =  'print(\'' + str(t[3]) + '\')'
     arr1.append(n)
 
     t[0] = arr1
 
 def p_encabezado(t):
-    '''encabezado   : FROM GOTO IMPORT WITH_GOTO
-                    | ARROBA WITH_GOTO DEF ID PARIZQ PARDER DOSP
+    '''encabezado   : FROM from_id import
                     | HEAP IGUAL CORIZQ ENTERO CORDER
                     | STACK IGUAL CORIZQ ENTERO CORDER
                     | H IGUAL ENTERO
-                    | P IGUAL ENTERO'''
+                    | P IGUAL ENTERO
+                    | for_hs'''
     n = ''
 
     if t[1] == 'HEAP':
@@ -2422,11 +2434,72 @@ def p_encabezado(t):
     elif t[1] == 'P':
         n = 'P = ' + str(t[3])
     elif t[1] == 'FROM':
-        n = 'from goto import with_goto'
-    elif t[1] == '@':
-        n = '@with_goto\ndef ' + str(t[4]) + '():'
+        n = 'from ' + str(t[2]) +' ' + str(t[3])
+    else:
+        n = str(t[1])
 
     t[0] = n
+
+def p_for_hs(t):
+    '''for_hs : FOR ID IN RANGE PARIZQ ENTERO PARDER DOSP append_for '''
+    n = 'for ' + str(t[2]) + ' in range(' + str(t[6]) + '):\n' + str(t[9])
+    t[0] = n
+
+def p_append_for(t):
+    '''append_for : append_for append_for1'''
+    n = '    ' + str(t[1]) + '\n    ' + str(t[2])
+    t[0] = n
+
+def p_append_for2(t):
+    '''append_for : append_for1'''
+    t[0] = str(t[1])
+
+def p_append_for1(t):
+    '''append_for1  : STACK PUNTO APPEND PARIZQ ID PARDER
+                    | HEAP PUNTO APPEND PARIZQ ID PARDER'''
+    n = ''
+    if t[1] == 'STACK':
+        n = 'stack'
+    elif t[1] == 'HEAP':
+        n = 'heap'
+    n = n + '.append(' + str(t[5]) + ')'
+    t[0] = n
+
+def p_encabezado1(t):
+    '''encabezado   : FROM GOTO IMPORT WITH_GOTO'''
+    n = 'from goto import with_goto'
+    t[0] = n
+
+def p_from_id(t):
+    '''from_id : from_id PUNTO ID'''
+    n = str(t[1]) + '.' + str(t[3])
+    t[0] = n
+        
+def p_from_id2(t):
+    '''from_id  : ID'''
+    t[0] = t[1]
+
+def p_import(t):
+    '''import   : IMPORT import_id''' 
+    t[0] = 'import ' + str(t[2])
+
+def p_import2(t):
+    '''import   : IMPORT import_id import_as''' 
+    t[0] = 'import ' + str(t[2]) + ' ' + str(t[3])
+
+def p_import_id(t):
+    '''import_id : import_id COMA ID'''
+    n = str(t[1]) + ',' + str(t[3])
+    t[0] = n
+
+def p_import_as(t):
+    '''import_as : AS ID'''
+    t[0] = 'as ' + str(t[2])
+
+def p_import_id2(t):
+    '''import_id    : ID
+                    | POR'''
+    t[0] = t[1]
 
 def p_temporales(t):
     '''temporales   : temporales COMA TEMPORAL
@@ -2442,10 +2515,45 @@ def p_temporales1(t):
 
 def p_instruccion_2(t):
     '''instruccion2 : asignacion
+                    | llamada_fun
+                    | funcion_print
                     | salto_incondicional
                     | salto_condicional
-                    | salto'''
+                    | salto
+                    | met_llam
+                    | global'''
     t[0] = t[1]
+
+def p_global(t):
+    '''global : GLOBAL var_global'''
+    arr = []
+    n = ''
+    if str(t[2]) == 'HEAP':
+        n = 'global heap'
+    elif str(t[2]) == 'STACK':
+        n = 'global stack'
+    else:
+        n = 'global ' + str(t[2])
+
+    arr.append('asig')
+    arr.append(n)
+    t[0] = arr
+
+def p_var_global(t):
+    '''var_global   : STACK
+                    | HEAP
+                    | P
+                    | H'''
+
+    t[0] = t[1]
+
+def p_met_llam(t):
+    '''met_llam : ID PUNTO ID LLAM_MET ID PARIZQ ID COMA ID PARDER'''
+    arr = []
+    n = str(t[1]) + '.' + str(t[3]) + str(t[4]) + str(t[5]) + '(' + str(t[7]) + ', ' + str(t[9]) + ')'
+    arr.append('asig')
+    arr.append(n)
+    t[0] = arr
 
 def p_asignacion(t):
     '''asignacion   : literal IGUAL operacion_aritmetica

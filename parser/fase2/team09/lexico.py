@@ -81,7 +81,8 @@ reservadas = (
     #### OPTIMIZACIÓN C3D
     'IMPORT', 'RETURN', 'DEF', '__INIT__', 
     'SELF', 'CLASS', 'HEAP', 'STACK', 'H', 'P',
-    'GOTO', 'LABEL', 'WITH_GOTO'
+    'GOTO', 'LABEL', 'WITH_GOTO', 'PRINT', 'RANGE', 
+    'APPEND', 'GLOBAL'
 )
 
 tokens = reservadas + (
@@ -124,7 +125,8 @@ tokens = reservadas + (
     'NOIGUAL',
     'DOSP',
     'COM_MUL_PY',
-    'COM_SIM_PY'
+    'COM_SIM_PY',
+    'LLAM_MET'
 )
 
 # OPTIMIZACIÓN
@@ -168,13 +170,17 @@ t_MENOR_IGUALQ = r'\<\='
 # OPERADORES RELACIONALES
 
 def t_CADENA(t):
-    r'\".*?\"'
+    r'(\'.*?\'|\".*?\")'
     t.value = t.value[1:-1]  # remuevo las comillas dobles
     return t
 
 def t_CARACTER(t):
     r'\'.*?\''
     t.value = t.value[1:-1]  # remuevo las comillas simples
+    return t
+
+def t_LLAM_MET(t):
+    r'\(.*?\)\.'
     return t
 
 def t_FDECIMAL(t):

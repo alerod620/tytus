@@ -4,8 +4,9 @@ import salto_incodicional as si
 import salto_condicional as sc
 import salto as s
 import reglas as r
-#import asignacion as asig
-#import acceso_hs as acceso
+import asignacion as asig
+import acceso_hs as acceso
+import declara as declara
 
 auxiliar = 0
 cambio_aux = False
@@ -232,11 +233,12 @@ class ast_op():
             aritmetica.Aritmetica(entrada[1], entrada[2], entrada[3]).optimizacion()
 
         elif entrada[0] == 'asig':
-            print('')
             #Asignacion
-            #asig.Asignacion(entrada[1]).optimizacion()
+            asig.Asignacion(entrada[1]).optimizacion()
 
         elif entrada[0] == 'acceso':
-            print('')
             #Acceso de heap y stack
-           # acceso.Acceso(entrada[1], entrada[2], entrada[3]).optimizacion()
+            acceso.Acceso(entrada[1], entrada[2], entrada[3]).optimizacion()
+
+        elif entrada[0] == 'declara':
+            declara.Declara(entrada[1], entrada[2]).optimizacion()
